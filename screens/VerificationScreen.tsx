@@ -23,7 +23,7 @@ type FormData = {
   password: string;
 };
 
-const LoginScreen = ({navigation}) => {
+const VerificationScreen = ({navigation}) => {
   const { handleSubmit, register, setValue, errors } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
@@ -40,18 +40,9 @@ const LoginScreen = ({navigation}) => {
       </View>
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
-          <Input name="email" label="Email Address / Phone Number" />
-          <Input name="password" label="Password" secureTextEntry={true} />
-
-          <Button onPress={handleSubmit(onSubmit)} variant="" title="Login" />
+          <Input name="otp" label="Verify OTP" />
+          <Button onPress={handleSubmit(onSubmit)} variant="" title="VERIFY" />
         </Form>
-
-        <Button
-          onPress={() => navigation.navigate("RegisterScreen")}
-          variant="outlined"
-          title="Register"
-        />
-
         <StatusBar style="auto" />
       </View>
     </View>
@@ -87,4 +78,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default VerificationScreen;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextInput, KeyboardAvoidingView, findNodeHandle } from 'react-native';
+import { TextInput } from 'react-native';
 import { ValidationOptions, FieldError } from 'react-hook-form';
 
 interface ValidationMap {
@@ -41,11 +41,12 @@ export default ({
     <>
       {(Array.isArray(children) ? [...children] : [children]).map(
         (child, i) => {
-          return child.props.name
+          return (
+        
+            child.props.name
             ? React.createElement(child.type, {
               
                 ...{
-                  
                   ...child.props,
                   ref: (e: TextInput) => {
                     Inputs.current[i] = e;
@@ -61,9 +62,13 @@ export default ({
                   blurOnSubmit: false,
                   //name: child.props.name,
                   error: errors[child.props.name],
+                  key: child.props.name
                 },
-              })
-            : child;
+              },
+              )
+            : child
+            )
+           
         }
       )}
     </>

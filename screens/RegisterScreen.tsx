@@ -20,32 +20,37 @@ import Button from "../components/Button";
 type FormData = {
   name: string;
   email: string;
+  phone: number;
   password: string;
 };
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   const { handleSubmit, register, setValue, errors } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
     Alert.alert("data", JSON.stringify(data));
+    navigation.navigate("VerificationScreen");
   };
+
   let Logo = require("../assets/logo.png");
 
   return (
     <View style={styles.main}>
       <View style={styles.logo}>
-      <Image source={Logo} style={{ width: 80, height: 80 }} />
+        <Image source={Logo} style={{ width: 70, height: 70 }} />
 
-      <Text style={styles.paragraph}>
-          Register new account! 
-        </Text>
+        <Text style={styles.paragraph}>Register new account!</Text>
       </View>
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
           <Input name="name" label="Name " />
-          <Input name="email" label="Email" />
+          <Input name="email" label="Email Address / Phone Number" />
           <Input name="password" label="Password" secureTextEntry={true} />
-          <Button onPress={handleSubmit(onSubmit)} variant="" title="Submit Details" />
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            variant=""
+            title="Submit Details"
+          />
         </Form>
 
         <StatusBar style="auto" />
@@ -70,9 +75,9 @@ const styles = StyleSheet.create({
     margin: 24,
     marginTop: 0,
     fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color:'black'
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "black",
   },
   container: {
     flex: 1,

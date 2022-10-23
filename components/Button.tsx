@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     backgroundColor: "#000",
     marginBottom: "3%",
-    marginTop: "7%",
+    marginTop: "2%",
   },
   btnTxt: {
     fontSize: 16,
