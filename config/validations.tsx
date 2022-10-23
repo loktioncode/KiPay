@@ -1,11 +1,18 @@
 export default {
   name: { required: { value: true, message: "Name is required" } },
   email: {
-    required: { value: true, message: "Email is required" },
+    pattern: {
+      value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+      message: "Invalid Email Format",
+    },
+  },
+  phone: {
+    required: { value: true, message: "phone number is required" },
     pattern: {
       value:
-        /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})|(^[0-9]{10})+$/,
-      message: "Invalid Email / PhoneNumber Format",
+        /(\+\d{1,3}\s?)?((\(\d{3}\)\s?)|(\d{3})(\s|-?))(\d{3}(\s|-?))(\d{4})(\s?(([E|e]xt[:|.|]?)|x|X)(\s?\d+))?/g,
+      message:
+        "Must contain at least 10 numbers or phonenumber with country code ",
     },
   },
   password: {
@@ -16,7 +23,7 @@ export default {
         "Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters",
     },
   },
-  otp:{
-    required: { value: true, message: "OTP is required" }
-  }
+  otp: {
+    required: { value: true, message: "OTP is required" },
+  },
 };

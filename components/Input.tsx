@@ -40,12 +40,13 @@ const styles = StyleSheet.create({
     width: "90%",
     borderWidth: 2,
     borderRadius: 5,
-    margin: 10,
-    padding: 18,
-    color: '#151922',
+    margin: 2,
+    padding: 15,
+    color: '#606164',
+    fontSize: 18
   },
   label: {
-    paddingVertical: 5,
+    paddingVertical: 2,
     fontSize: 16,
     fontWeight: 'bold',
     color: '#151922',

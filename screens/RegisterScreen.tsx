@@ -39,12 +39,14 @@ const RegisterScreen = ({ navigation }) => {
       <View style={styles.logo}>
         <Image source={Logo} style={{ width: 70, height: 70 }} />
 
-        <Text style={styles.paragraph}>Register new account!</Text>
+        <Text style={styles.paragraph}>Registration</Text>
       </View>
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
           <Input name="name" label="Name " />
-          <Input name="email" label="Email Address / Phone Number" />
+          <Input name="phone" label="Phone Number" />
+          <Input name="email" label="Email Address" />
+
           <Input name="password" label="Password" secureTextEntry={true} />
           <Button
             onPress={handleSubmit(onSubmit)}
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     margin: 24,
-    marginTop: 0,
+    marginTop:10,
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",

@@ -47,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
       </View>
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
-          <Input name="email" label="Email Address / Phone Number" />
+          <Input name="phone" label="Phone Number" />
           <Input name="password" label="Password" secureTextEntry={true} />
 
           <Button onPress={handleSubmit(onSubmit)} variant="" title="Login" />
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   logo: {
     justifyContent: "flex-end",
     alignItems: "center",
-    height: "20%",
+    height: "30%",
     backgroundColor: "#fff",
   },
 
