@@ -10,7 +10,7 @@ import {
 } from "react-native";
 // import piggyLogo from "../assets/piggy.svg";
 import { useForm, Controller } from "react-hook-form";
-
+import Toast from "react-native-root-toast";
 // You can import from local files
 import Input from "../components/Input";
 import Form from "../components/Form";
@@ -18,16 +18,25 @@ import Button from "../components/Button";
 
 import validation from "../validations";
 
-type FormData = {
+type FormData = { 
   email: string;
   password: string;
 };
 
 const LoginScreen = ({ navigation }) => {
-  const { handleSubmit, register, setValue, errors, getValues } = useForm<FormData>();
+  const { handleSubmit, register, setValue, errors, getValues } =
+    useForm<FormData>();
+
+  let toast = Toast.show("Request sent!", {
+    duration: Toast.durations.LONG,
+  });
 
   const onSubmit = (data: FormData) => {
-    Alert.alert("data", JSON.stringify(data));
+    // Alert.alert("data", JSON.stringify(data));
+    // <Toast visible={this.state.visible}>Thanks for subscribing!</Toast>
+    setTimeout(function hideToast() {
+      Toast.hide(toast);
+    }, 200);
     navigation.navigate("HomeScreen");
   };
 
@@ -55,7 +64,7 @@ const LoginScreen = ({ navigation }) => {
         <Button
           onPress={() =>
             navigation.navigate("VerificationScreen", {
-              email: getValues("email")
+              email: getValues("email"),
             })
           }
           variant="text"

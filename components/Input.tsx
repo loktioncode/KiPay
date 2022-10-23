@@ -41,9 +41,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
     margin: 10,
-    padding: 25,
+    padding: 18,
     color: 'black',
-
   },
   label: {
     paddingVertical: 5,
