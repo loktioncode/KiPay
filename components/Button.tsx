@@ -6,11 +6,11 @@ const Button = (props: any) => {
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={variant === "outlined" ? styles.outlinedBtn : styles.button}
+      style={variant === "outlined" ? styles.outlinedBtn : variant === "text" ? styles.textButton : styles.button}
     >
       <Text
         style={
-          variant === "outlined" ? styles.outlinedButtonText : styles.btnTxt
+          variant === "outlined" ? styles.outlinedButtonText : variant === "text" ? styles.textButtonText :  styles.btnTxt
         }
       >
         {title}
@@ -57,6 +57,22 @@ const styles = StyleSheet.create({
     color: "white",
     borderColor: "black",
     borderWidth: 1,
+  },
+  textButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 38,
+    elevation: 3,
+    backgroundColor: "#fff",
+    marginTop: 10
+  },
+  textButtonText: {
+    fontSize: 16,
+    lineHeight: 20,
+    fontWeight: "normal",
+    letterSpacing: 0.25,
+    color: "black"
   },
 });
 

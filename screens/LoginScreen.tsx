@@ -23,12 +23,12 @@ type FormData = {
   password: string;
 };
 
-const LoginScreen = ({navigation}) => {
-  const { handleSubmit, register, setValue, errors } = useForm<FormData>();
+const LoginScreen = ({ navigation }) => {
+  const { handleSubmit, register, setValue, errors, getValues } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
     Alert.alert("data", JSON.stringify(data));
-
+    navigation.navigate("HomeScreen");
   };
 
   let Logo = require("../assets/logo.png");
@@ -52,7 +52,15 @@ const LoginScreen = ({navigation}) => {
           title="Register"
         />
 
-        <StatusBar style="auto" />
+        <Button
+          onPress={() =>
+            navigation.navigate("VerificationScreen", {
+              email: getValues("email")
+            })
+          }
+          variant="text"
+          title="Forgot Password ?"
+        />
       </View>
     </View>
   );
@@ -67,7 +75,7 @@ const styles = StyleSheet.create({
   logo: {
     justifyContent: "flex-end",
     alignItems: "center",
-    height: "30%",
+    height: "20%",
     backgroundColor: "#fff",
   },
 

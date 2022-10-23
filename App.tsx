@@ -7,6 +7,9 @@ const Stack = createStackNavigator();
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import VerificationScreen from "./screens/VerificationScreen";
+import ResetPasswordScreen from "./screens/ResetScreen";
+import DashboardScreen from "./screens/DashboardScreen";
+import HomeScreen from "./screens/HomeScreen";
 
 export default function App() {
   return (
@@ -28,6 +31,24 @@ export default function App() {
           name="VerificationScreen"
           component={VerificationScreen}
           options={{ title: "Verify OTP" }}
+        />
+
+        <Stack.Screen
+          name="ResetPasswordScreen"
+          component={ResetPasswordScreen}
+          options={{ title: " Reset Password " }}
+        />
+
+        <Stack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{ title: "HomeScreen" }}
+        />
+
+        <Stack.Screen
+          name="DashboardScreen"
+          component={DashboardScreen}
+          options={{ title: "Dashboard" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

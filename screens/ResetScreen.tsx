@@ -23,13 +23,12 @@ type FormData = {
   password: string;
 };
 
-const VerificationScreen = ({ route, navigation }) => {
+const ResetPasswordScreen = ({navigation}) => {
   const { handleSubmit, register, setValue, errors } = useForm<FormData>();
-  const { email } = route.params;
 
   const onSubmit = (data: FormData) => {
     Alert.alert("data", JSON.stringify(data));
-    navigation.navigate("HomeScreen");
+
   };
 
   let Logo = require("../assets/logo.png");
@@ -38,18 +37,15 @@ const VerificationScreen = ({ route, navigation }) => {
     <View style={styles.main}>
       <View style={styles.logo}>
         <Image source={Logo} style={{ width: 100, height: 100 }} />
+        <Text style={styles.paragraph}>Reset Password</Text>
       </View>
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
-          {email === undefined ? (
-            <Input name="email" label="Email / Phonenumber" />
-          ) : (
-            <></>
-          )}
-          <Input name="otp" label="Verify OTP" />
-          <Button onPress={handleSubmit(onSubmit)} variant="" title="VERIFY" />
+          <Input name="password" label="New Password" secureTextEntry={true} />
+          <Input name="password" label="Confirm Password" secureTextEntry={true} />
+          <Button onPress={handleSubmit(onSubmit)} variant="" title="RESET" />
         </Form>
-        <StatusBar style="auto" />
+     
       </View>
     </View>
   );
@@ -67,7 +63,14 @@ const styles = StyleSheet.create({
     height: "30%",
     backgroundColor: "#fff",
   },
-
+  paragraph: {
+    margin: 14,
+    marginTop: 10,
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "black",
+  },
   container: {
     flex: 1,
     alignItems: "center",
@@ -84,4 +87,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VerificationScreen;
+export default ResetPasswordScreen;
