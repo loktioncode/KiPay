@@ -5,7 +5,6 @@ import {
   View,
   Image,
   TextInput,
-  Button,
   Alert,
   Pressable,
 } from "react-native";
@@ -16,6 +15,7 @@ import { useForm, Controller } from "react-hook-form";
 import Input from "../components/Input";
 import Form from "../components/Form";
 import validation from "../validations";
+import Button from "../components/Button";
 
 type FormData = {
   name: string;
@@ -29,25 +29,24 @@ const RegisterScreen = () => {
   const onSubmit = (data: FormData) => {
     Alert.alert("data", JSON.stringify(data));
   };
+  let Logo = require("../assets/logo.png");
 
   return (
     <View style={styles.main}>
       <View style={styles.logo}>
-        {/* <Image source={piggyLogo} style={{ width: 100, height: 100 }} /> */}
+      <Image source={Logo} style={{ width: 80, height: 80 }} />
+
+      <Text style={styles.paragraph}>
+          Register new account! 
+        </Text>
       </View>
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
           <Input name="name" label="Name " />
           <Input name="email" label="Email" />
           <Input name="password" label="Password" secureTextEntry={true} />
-          <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
-            <Text style={styles.btnTxt}>Register</Text>
-          </Pressable>
+          <Button onPress={handleSubmit(onSubmit)} variant="" title="Submit Details" />
         </Form>
-
-        <Pressable style={styles.outlinedBtn}>
-          <Text style={styles.outlinedButtonText}>SignUp</Text>
-        </Pressable>
 
         <StatusBar style="auto" />
       </View>
@@ -64,10 +63,17 @@ const styles = StyleSheet.create({
   logo: {
     justifyContent: "flex-end",
     alignItems: "center",
-    height: "30%",
+    height: "20%",
     backgroundColor: "#fff",
   },
-
+  paragraph: {
+    margin: 24,
+    marginTop: 0,
+    fontSize: 24,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color:'black'
+  },
   container: {
     flex: 1,
     alignItems: "center",

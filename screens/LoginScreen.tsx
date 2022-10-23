@@ -23,7 +23,7 @@ type FormData = {
   password: string;
 };
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
   const { handleSubmit, register, setValue, errors } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
@@ -47,7 +47,7 @@ const LoginScreen = () => {
         </Form>
 
         <Button
-          onPress={() => console.log("Register User")}
+          onPress={() => navigation.navigate("RegisterScreen")}
           variant="outlined"
           title="Register"
         />
