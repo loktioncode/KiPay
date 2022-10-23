@@ -51,7 +51,7 @@ const RegisterScreen = ({ navigation }) => {
           <Button
             onPress={handleSubmit(onSubmit)}
             variant=""
-            title="Submit Details"
+            title="SUBMIT"
           />
         </Form>
 

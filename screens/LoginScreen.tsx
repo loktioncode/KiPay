@@ -50,13 +50,13 @@ const LoginScreen = ({ navigation }) => {
           <Input name="phone" label="Phone Number" />
           <Input name="password" label="Password" secureTextEntry={true} />
 
-          <Button onPress={handleSubmit(onSubmit)} variant="" title="Login" />
+          <Button onPress={handleSubmit(onSubmit)} variant="" title="LOGIN" />
         </Form>
 
         <Button
           onPress={() => navigation.navigate("RegisterScreen")}
           variant="outlined"
-          title="Register"
+          title="REGISTER"
         />
 
         <Button
