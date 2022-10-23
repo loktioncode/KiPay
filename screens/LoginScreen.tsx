@@ -4,10 +4,9 @@ import {
   Text,
   View,
   Image,
-  TextInput,
-  Button,
-  Alert,
+  TouchableOpacity,
   Pressable,
+  Alert,
 } from "react-native";
 // import piggyLogo from "../assets/piggy.svg";
 import { useForm, Controller } from "react-hook-form";
@@ -15,12 +14,11 @@ import { useForm, Controller } from "react-hook-form";
 // You can import from local files
 import Input from "../components/Input";
 import Form from "../components/Form";
-import Hero from "../components/Hero";
+import Button from "../components/Button";
 
 import validation from "../validations";
 
 type FormData = {
-  name: string;
   email: string;
   password: string;
 };
@@ -30,25 +28,29 @@ const LoginScreen = () => {
 
   const onSubmit = (data: FormData) => {
     Alert.alert("data", JSON.stringify(data));
+    console.log(">>>1", data);
   };
+
+  let Logo = require("../assets/logo.png");
 
   return (
     <View style={styles.main}>
       <View style={styles.logo}>
-        {/* <Image source={piggyLogo} style={{ width: 100, height: 100 }} /> */}
+        <Image source={Logo} style={{ width: 100, height: 100 }} />
       </View>
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
           <Input name="email" label="Email" />
           <Input name="password" label="Password" secureTextEntry={true} />
-          <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
-            <Text style={styles.btnTxt}>Login</Text>
-          </Pressable>
+
+          <Button onPress={handleSubmit(onSubmit)} variant="" title="Login" />
         </Form>
 
-        <Pressable style={styles.outlinedBtn}>
-          <Text style={styles.outlinedButtonText}>SignUp</Text>
-        </Pressable>
+        <Button
+          onPress={() => console.log("Register User")}
+          variant="outlined"
+          title="Register"
+        />
 
         <StatusBar style="auto" />
       </View>
@@ -82,44 +84,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     margin: 10,
     padding: 25,
-  },
-  button: {
-    width: "90%",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    backgroundColor: "#000",
-    marginBottom: "3%",
-    marginTop: "7%",
-  },
-  btnTxt: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "white",
-  },
-  outlinedButtonText: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-  },
-
-  outlinedBtn: {
-    width: "90%",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    color: "white",
-    borderColor: "black",
-    borderWidth: 1,
   },
 });
 

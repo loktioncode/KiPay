@@ -1,10 +1,8 @@
 import * as React from 'react';
 import {
-  View,
   TextInput,
   Text,
   StyleSheet,
-  ViewStyle,
   TextStyle,
   TextInputProps,
 } from 'react-native';
@@ -51,7 +49,7 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#c0cbd3',
+    color: 'black',
   },
   textError: {
     color: '#fc6d47',
