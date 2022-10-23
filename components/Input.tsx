@@ -21,7 +21,7 @@ export default React.forwardRef<any, Props>(
     const { label, labelStyle, error, ...inputProps } = props;
 
     return (
-      <View style={styles.container}>
+      <>
         {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
         <TextInput
           autoCapitalize="none"
@@ -30,23 +30,22 @@ export default React.forwardRef<any, Props>(
           {...inputProps}
         />
         <Text style={styles.textError}>{error && error.message}</Text>
-      </View>
+      </>
     );
   }
 );
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 8,
-  },
+
   input: {
     borderColor: "black",
     width: "90%",
-    height: 40,
     borderWidth: 2,
     borderRadius: 5,
     margin: 10,
     padding: 25,
+    color: '#000',
+
   },
   label: {
     paddingVertical: 5,

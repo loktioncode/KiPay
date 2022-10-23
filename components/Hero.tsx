@@ -4,7 +4,7 @@ import { Text, View, StyleSheet, Image } from 'react-native';
 export default () => {
     return (
       <View style={styles.container}>
-       <Image style={styles.logo} source={require('./assets/hero.jpg')} />
+       {/* <Image style={styles.logo} source={require('./assets/logo.png')} /> */}
         <Text style={styles.paragraph}>
           Form in React Native, The right Way! 
         </Text>
@@ -27,6 +27,6 @@ const styles = StyleSheet.create({
   },
   logo: {
    width:'100%',
-   height:200
+   height:100
   }
 });

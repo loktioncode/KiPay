@@ -43,7 +43,9 @@ export default ({
         (child, i) => {
           return child.props.name
             ? React.createElement(child.type, {
+              
                 ...{
+                  
                   ...child.props,
                   ref: (e: TextInput) => {
                     Inputs.current[i] = e;

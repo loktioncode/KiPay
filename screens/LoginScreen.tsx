@@ -1,22 +1,23 @@
-import * as React from "react";
+import { StatusBar } from "expo-status-bar";
 import {
+  StyleSheet,
   Text,
   View,
-  StyleSheet,
+  Image,
+  TextInput,
   Button,
   Alert,
-  ScrollView,
+  Pressable,
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-
-import Constants from "expo-constants";
-import { useForm } from "react-hook-form";
+// import piggyLogo from "../assets/piggy.svg";
+import { useForm, Controller } from "react-hook-form";
 
 // You can import from local files
 import Input from "../components/Input";
 import Form from "../components/Form";
-import validation from "../validations";
 import Hero from "../components/Hero";
+
+import validation from "../validations";
 
 type FormData = {
   name: string;
@@ -32,39 +33,55 @@ const LoginScreen = () => {
   };
 
   return (
-    <KeyboardAwareScrollView
-      contentContainerStyle={styles.container}
-      style={{ backgroundColor: "#181e34" }}
-    >
-      <Hero />
-      <View style={styles.formContainer}>
+    <View style={styles.main}>
+      <View style={styles.logo}>
+        {/* <Image source={piggyLogo} style={{ width: 100, height: 100 }} /> */}
+      </View>
+      <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
-          <Input name="name" label="Name " />
           <Input name="email" label="Email" />
           <Input name="password" label="Password" secureTextEntry={true} />
-          <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+          <Pressable style={styles.button} onPress={handleSubmit(onSubmit)}>
+            <Text style={styles.btnTxt}>Login</Text>
+          </Pressable>
         </Form>
+
+        <Pressable style={styles.outlinedBtn}>
+          <Text style={styles.outlinedButtonText}>SignUp</Text>
+        </Pressable>
+
+        <StatusBar style="auto" />
       </View>
-    </KeyboardAwareScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  main: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "#fff",
+  },
   logo: {
     justifyContent: "flex-end",
     alignItems: "center",
     height: "30%",
     backgroundColor: "#fff",
   },
+
   container: {
     flex: 1,
-    justifyContent: 'center',
-    paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#181e34',
+    alignItems: "center",
+    marginTop: 35,
   },
-  formContainer: {
-    padding: 8,
-    flex: 1,
+  input: {
+    borderColor: "black",
+    width: "90%",
+    height: 40,
+    borderWidth: 2,
+    borderRadius: 5,
+    margin: 10,
+    padding: 25,
   },
   button: {
     width: "90%",
