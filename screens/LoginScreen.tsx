@@ -1,13 +1,5 @@
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  Pressable,
-  Alert,
-} from "react-native";
+import React, { useContext } from "react";
+import { StyleSheet, Text, View, Image, Alert } from "react-native";
 // import piggyLogo from "../assets/piggy.svg";
 import { useForm, Controller } from "react-hook-form";
 import Toast from "react-native-root-toast";
@@ -15,15 +7,20 @@ import Toast from "react-native-root-toast";
 import Input from "../components/Input";
 import Form from "../components/Form";
 import Button from "../components/Button";
+import { UserContext } from "../context/UserContext";
+import validation from "../config/validations";
+import { UserContextType, IUser } from "../types/user";
 
-import validation from "../validations";
 
-type FormData = { 
+type FormData = {
   email: string;
   password: string;
 };
 
 const LoginScreen = ({ navigation }) => {
+  const { user , saveUser} = useContext(UserContext);
+
+
   const { handleSubmit, register, setValue, errors, getValues } =
     useForm<FormData>();
 

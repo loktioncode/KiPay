@@ -16,7 +16,7 @@ import Input from "../components/Input";
 import Form from "../components/Form";
 import Button from "../components/Button";
 
-import validation from "../validations";
+import validation from "../config/validations";
 
 type FormData = {
   email: string;
@@ -41,11 +41,11 @@ const VerificationScreen = ({ route, navigation }) => {
       </View>
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
-          {email === undefined ? (
+          {/* {email === undefined ? (
             <Input name="email" label="Email / Phonenumber" />
           ) : (
             <></>
-          )}
+          )} */}
           <Input name="otp" label="Verify OTP" />
           <Button onPress={handleSubmit(onSubmit)} variant="" title="VERIFY" />
         </Form>

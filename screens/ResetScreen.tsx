@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,7 +16,7 @@ import Input from "../components/Input";
 import Form from "../components/Form";
 import Button from "../components/Button";
 
-import validation from "../validations";
+import validation from "../config/validations";
 
 type FormData = {
   email: string;
@@ -42,7 +42,7 @@ const ResetPasswordScreen = ({navigation}) => {
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
           <Input name="password" label="New Password" secureTextEntry={true} />
-          <Input name="password" label="Confirm Password" secureTextEntry={true} />
+          <Input name="password2" label="Confirm Password" secureTextEntry={true} />
           <Button onPress={handleSubmit(onSubmit)} variant="" title="RESET" />
         </Form>
      

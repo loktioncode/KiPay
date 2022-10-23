@@ -14,7 +14,7 @@ import { useForm, Controller } from "react-hook-form";
 // You can import from local files
 import Input from "../components/Input";
 import Form from "../components/Form";
-import validation from "../validations";
+import validation from "../config/validations";
 import Button from "../components/Button";
 
 type FormData = {
