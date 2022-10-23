@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     textAlign: "center",
-    color: "black",
+    color: "#151922",
   },
   container: {
     flex: 1,
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   input: {
-    borderColor: "black",
+    borderColor: "#151922",
     width: "90%",
     height: 40,
     borderWidth: 2,

@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
-    color: "black",
+    color: "#151922",
   },
   container: {
     flex: 1,
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   input: {
-    borderColor: "black",
+    borderColor: "#151922",
     width: "90%",
     height: 40,
     borderWidth: 2,
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: "#000",
+    backgroundColor: "#151922",
     marginBottom: "3%",
     marginTop: "7%",
   },
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 3,
     color: "white",
-    borderColor: "black",
+    borderColor: "#151922",
     borderWidth: 1,
   },
 });

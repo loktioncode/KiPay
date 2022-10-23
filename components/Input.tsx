@@ -36,19 +36,19 @@ export default React.forwardRef<any, Props>(
 const styles = StyleSheet.create({
 
   input: {
-    borderColor: "black",
+    borderColor: "#151922",
     width: "90%",
     borderWidth: 2,
     borderRadius: 5,
     margin: 10,
     padding: 18,
-    color: 'black',
+    color: '#151922',
   },
   label: {
     paddingVertical: 5,
     fontSize: 16,
     fontWeight: 'bold',
-    color: 'black',
+    color: '#151922',
   },
   textError: {
     color: '#fc6d47',

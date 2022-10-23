@@ -25,7 +25,7 @@ type FormData = {
 
 const VerificationScreen = ({ route, navigation }) => {
   const { handleSubmit, register, setValue, errors } = useForm<FormData>();
-  const { email } = route.params;
+  // const { email } = route.params;
 
   const onSubmit = (data: FormData) => {
     Alert.alert("data", JSON.stringify(data));
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   input: {
-    borderColor: "black",
+    borderColor: "#151922",
     width: "90%",
     height: 40,
     borderWidth: 2,

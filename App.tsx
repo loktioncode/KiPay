@@ -1,69 +1,97 @@
+import "react-native-gesture-handler";
 import React from "react";
-import { StatusBar } from "expo-status-bar";
+import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Icon from "react-native-vector-icons/Ionicons";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import VerificationScreen from "./screens/VerificationScreen";
 import ResetPasswordScreen from "./screens/ResetScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import HomeScreen from "./screens/HomeScreen";
-
+import { useWindowDimensions } from "react-native";
 import UserProvider from "./context/UserContext";
+import Button from "./components/Button";
+import CustomIcon from "./components/Icon";
 
 const Drawer = createDrawerNavigator();
-export default function App() {
-  const CustomDrawerContent = (props: any) => {
-    const { state, ...rest } = props;
-    const newState = { ...state };
-    newState.routes = newState.routes.filter(
-      (item: any) => item.name === "LoginScreen"
-    );
+const Stack = createDrawerNavigator();
 
-    return (
-      <DrawerContentScrollView {...props}>
-        <DrawerItemList state={newState} {...rest} />
-      </DrawerContentScrollView>
-    );
-  };
+export default function App() {
+  const dimensions = useWindowDimensions();
+
+  const isLargeScreen = dimensions.width >= 768;
 
   return (
     <NavigationContainer>
       <UserProvider>
         <Drawer.Navigator
-          initialRouteName="Home"
-          drawerContent={(props) => <CustomDrawerContent {...props} />}
+          initialRouteName="Login"
           screenOptions={{
-            headerShown: true,
+            headerShown: false,
+            drawerType: isLargeScreen ? "permanent" : "back",
+            drawerStyle: isLargeScreen ? null : { width: "100%" },
           }}
         >
           <Drawer.Screen
             name="LoginScreen"
             component={LoginScreen}
-            options={{ title: "Login" }}
+            options={{
+              headerShown: false,
+              title: "Login",
+            }}
           />
 
-          <Drawer.Screen
+          <Stack.Screen
             name="RegisterScreen"
             component={RegisterScreen}
-            options={{ title: "Register User" }}
+            options={{
+              headerShown: true,
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerStyle: {
+                backgroundColor: "orange",
+              },
+              headerLeft: () => (
+                <CustomIcon
+                  name={"md-arrow-back"}
+                  color={"#151922"}
+                  size={30}
+                  onPress={()=>console.log("Register Page")}
+                />
+              ),
+              headerRight: null,
+              headerTitle: "Register User",
+            }}
           />
 
           <Drawer.Screen
             name="VerificationScreen"
             component={VerificationScreen}
-            options={{ title: "Verify OTP" }}
+            options={{
+              title: "Verify OTP",
+              drawerItemStyle: {
+                display: "none",
+              },
+            }}
           />
 
           <Drawer.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}
-            options={{ title: " Reset Password " }}
+            options={{
+              title: " Reset Password ",
+              drawerItemStyle: {
+                display: "none",
+              },
+            }}
           />
 
           <Drawer.Screen
@@ -82,3 +110,9 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  icon: {
+    marginLeft: 20,
+  },
+});

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { StyleSheet, Text, View, Image, Alert } from "react-native";
 // import piggyLogo from "../assets/piggy.svg";
 import { useForm, Controller } from "react-hook-form";
@@ -18,7 +18,8 @@ type FormData = {
 };
 
 const LoginScreen = ({ navigation }) => {
-  const { user , saveUser} = useContext(UserContext);
+  const { user, saveUser } = React.useContext(UserContext) as UserContextType;
+  // const { user , saveUser} = useContext();
 
 
   const { handleSubmit, register, setValue, errors, getValues } =
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
     marginTop: 35,
   },
   input: {
-    borderColor: "black",
+    borderColor: "#151922",
     width: "90%",
     height: 40,
     borderWidth: 2,
