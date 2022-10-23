@@ -1,14 +1,9 @@
 import "react-native-gesture-handler";
 import React from "react";
-import { StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   createDrawerNavigator,
-  DrawerContentScrollView,
-  DrawerItemList,
 } from "@react-navigation/drawer";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Icon from "react-native-vector-icons/Ionicons";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import VerificationScreen from "./screens/VerificationScreen";
@@ -17,7 +12,6 @@ import DashboardScreen from "./screens/DashboardScreen";
 import HomeScreen from "./screens/HomeScreen";
 import { useWindowDimensions } from "react-native";
 import UserProvider from "./context/UserContext";
-import Button from "./components/Button";
 import CustomIcon from "./components/Icon";
 
 const Drawer = createDrawerNavigator();
@@ -34,7 +28,7 @@ export default function App() {
         <Drawer.Navigator
           initialRouteName="Login"
           screenOptions={{
-            headerShown: false,
+            headerShown: true,
             drawerType: isLargeScreen ? "permanent" : "back",
             drawerStyle: isLargeScreen ? null : { width: "100%" },
           }}
@@ -51,47 +45,82 @@ export default function App() {
           <Stack.Screen
             name="RegisterScreen"
             component={RegisterScreen}
-            options={{
+            options={({ navigation }) => ({
               headerShown: true,
               drawerItemStyle: {
                 display: "none",
               },
               headerStyle: {
-                backgroundColor: "orange",
+                backgroundColor: "#221E15",
+              },
+              headerTitleStyle: {
+                color: "#FFFFFF",
               },
               headerLeft: () => (
                 <CustomIcon
                   name={"md-arrow-back"}
-                  color={"#151922"}
+                  color={"#FFFFFF"}
                   size={30}
-                  onPress={()=>console.log("Register Page")}
+                  onPress={() => navigation.goBack()}
                 />
               ),
               headerRight: null,
               headerTitle: "Register User",
-            }}
+            })}
           />
 
           <Drawer.Screen
             name="VerificationScreen"
             component={VerificationScreen}
-            options={{
-              title: "Verify OTP",
+            options={({ navigation }) => ({
+              headerShown: true,
               drawerItemStyle: {
                 display: "none",
               },
-            }}
+              headerStyle: {
+                backgroundColor: "#221E15",
+              },
+              headerTitleStyle: {
+                color: "#FFFFFF",
+              },
+              headerLeft: () => (
+                <CustomIcon
+                  name={"md-arrow-back"}
+                  color={"#FFFFFF"}
+                  size={30}
+                  onPress={() => navigation.goBack()}
+                />
+              ),
+              headerRight: null,
+              headerTitle: "Verification",
+            })}
           />
 
           <Drawer.Screen
             name="ResetPasswordScreen"
             component={ResetPasswordScreen}
-            options={{
-              title: " Reset Password ",
+            options={({ navigation }) => ({
+              headerShown: true,
               drawerItemStyle: {
                 display: "none",
               },
-            }}
+              headerStyle: {
+                backgroundColor: "#221E15",
+              },
+              headerTitleStyle: {
+                color: "#FFFFFF",
+              },
+              headerLeft: () => (
+                <CustomIcon
+                  name={"md-arrow-back"}
+                  color={"#FFFFFF"}
+                  size={30}
+                  onPress={() => navigation.goBack()}
+                />
+              ),
+              headerRight: null,
+              headerTitle: "Reset Password",
+            })}
           />
 
           <Drawer.Screen
@@ -111,8 +140,4 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  icon: {
-    marginLeft: 20,
-  },
-});
+

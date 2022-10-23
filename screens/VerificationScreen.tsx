@@ -49,6 +49,15 @@ const VerificationScreen = ({ route, navigation }) => {
           <Input name="otp" label="Verify OTP" />
           <Button onPress={handleSubmit(onSubmit)} variant="" title="VERIFY" />
         </Form>
+        <View>
+         
+          <Button
+            onPress={() => Alert.alert("otp reset")}
+            variant="text"
+            title="Haven't recieved OTP yet!? Click here"
+          />
+        </View>
+
         <StatusBar style="auto" />
       </View>
     </View>
@@ -73,14 +82,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 35,
   },
-  input: {
-    borderColor: "#151922",
-    width: "90%",
-    height: 40,
-    borderWidth: 2,
-    borderRadius: 5,
-    margin: 10,
-    padding: 25,
+
+  paragraph: {
+    marginTop: 20,
+    marginBottom: 20,
+    fontSize: 14,
+    fontWeight: "300",
+    textAlign: "center",
+    color: "#151922",
   },
 });
 
