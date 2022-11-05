@@ -51,7 +51,7 @@ export default function App() {
                 display: "none",
               },
               headerStyle: {
-                backgroundColor: "#221E15",
+                backgroundColor: "#2c3e50",
               },
               headerTitleStyle: {
                 color: "#FFFFFF",
@@ -78,7 +78,7 @@ export default function App() {
                 display: "none",
               },
               headerStyle: {
-                backgroundColor: "#221E15",
+                backgroundColor: "#2c3e50",
               },
               headerTitleStyle: {
                 color: "#FFFFFF",
@@ -105,7 +105,7 @@ export default function App() {
                 display: "none",
               },
               headerStyle: {
-                backgroundColor: "#221E15",
+                backgroundColor: "#2c3e50",
               },
               headerTitleStyle: {
                 color: "#FFFFFF",

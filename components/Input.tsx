@@ -36,7 +36,7 @@ export default React.forwardRef<any, Props>(
 const styles = StyleSheet.create({
 
   input: {
-    borderColor: "#151922",
+    borderColor: "#2c3e50",
     width: "90%",
     borderWidth: 2,
     borderRadius: 5,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#151922',
+    color: '#2c3e50',
   },
   textError: {
     color: '#fc6d47',

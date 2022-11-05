@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "300",
     textAlign: "center",
-    color: "#151922",
+    color: "#2c3e50",
   },
 });
 

@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 32,
     borderRadius: 4,
     elevation: 3,
-    backgroundColor: "#151922",
+    backgroundColor: "#2c3e50",
     marginBottom: "3%",
     marginTop: "2%",
   },
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     elevation: 3,
     color: "white",
-    borderColor: "#151922",
+    borderColor: "#2c3e50",
     borderWidth: 1,
   },
   textButton: {
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     fontWeight: "normal",
     letterSpacing: 0.25,
-    color: "#151922"
+    color: "#2c3e50"
   },
 });
 

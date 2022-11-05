@@ -8,12 +8,12 @@ export default {
   },
   phone: {
     required: { value: true, message: "phone number is required" },
-    pattern: {
-      value:
-        /(\+\d{1,3}\s?)?((\(\d{3}\)\s?)|(\d{3})(\s|-?))(\d{3}(\s|-?))(\d{4})(\s?(([E|e]xt[:|.|]?)|x|X)(\s?\d+))?/g,
-      message:
-        "Must contain at least 10 numbers or phonenumber with country code ",
-    },
+    // pattern: {
+    //   value:
+    //     /^\+[1-9]{1}[0-9]{3,14}$/,
+    //   message:
+    //     "Must contain at least 10 numbers or phonenumber with country code ",
+    // },
   },
   password: {
     required: { value: true, message: "Password is required" },
