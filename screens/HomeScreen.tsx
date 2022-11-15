@@ -5,70 +5,13 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  SafeAreaView,
-  ScrollView,
   StatusBar,
 } from "react-native";
-import { FlatGrid} from "react-native-super-grid";
-import {
-  AntDesign,
-  Ionicons,
-  Fontisto,
-  MaterialIcons,
-} from "@expo/vector-icons";
-import ListView from "../components/ListView"
+import { FlatGrid } from "react-native-super-grid";
+import { menuItems } from "../components/gridItems";
+import ListView from "../components/ListView";
 
 const HomeScreen = ({ navigation }) => {
-  const [items, setItems] = React.useState([
-    {
-      name: "BUY GOODS",
-      code: "#1abc9c",
-      icon: (
-        <MaterialIcons
-          name="add-shopping-cart"
-          size={40}
-          color="white"
-          style={styles.icon}
-        />
-      ),
-    },
-    {
-      name: "SEND COUPON",
-      code: "#2ecc71",
-      icon: (
-        <Ionicons
-          name="ios-share-outline"
-          size={40}
-          color="white"
-          style={styles.icon}
-        />
-      ),
-    },
-    {
-      name: "DEPOSIT",
-      code: "#3498db",
-      icon: (
-        <AntDesign
-          name="download"
-          size={40}
-          color="white"
-          style={styles.icon}
-        />
-      ),
-    },
-    {
-      name: "WITHDRAW",
-      code: "#9b59b6",
-      icon: (
-        <Ionicons
-          name="cash-outline"
-          size={40}
-          color="white"
-          style={styles.icon}
-        />
-      ),
-    },
-  ]);
   return (
     <View style={styles.container}>
       <View style={styles.head}>
@@ -79,7 +22,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={styles.griContainer}>
         <FlatGrid
           itemDimension={130}
-          data={items}
+          data={menuItems}
           style={styles.gridView}
           // staticDimension={300}
           // fixed
@@ -100,7 +43,6 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
           )}
         />
-      
       </View>
       <ListView />
     </View>
@@ -108,7 +50,6 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-
   griContainer: {
     display: "flex",
     height: "100%",
@@ -131,7 +72,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
   },
   icon: {
-    paddingTop:25,
+    paddingTop: 25,
     width: 100,
     paddingLeft: "40%",
   },
@@ -171,7 +112,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
     textAlign: "center",
-    paddingTop:20
+    paddingTop: 20,
   },
   itemCode: {
     fontWeight: "600",
