@@ -1,9 +1,7 @@
 import "react-native-gesture-handler";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import {
-  createDrawerNavigator,
-} from "@react-navigation/drawer";
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import VerificationScreen from "./screens/VerificationScreen";
@@ -126,7 +124,15 @@ export default function App() {
           <Drawer.Screen
             name="HomeScreen"
             component={HomeScreen}
-            options={{ title: "Home" }}
+            options={({ navigation }) => ({
+              headerShown: true,
+
+              headerTitleStyle: {
+                color: "#34495e",
+              },
+
+              headerTitle: "Cuopons ZW",
+            })}
           />
 
           <Drawer.Screen
@@ -139,5 +145,3 @@ export default function App() {
     </NavigationContainer>
   );
 }
-
-

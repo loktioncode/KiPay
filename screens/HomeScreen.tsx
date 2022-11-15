@@ -9,87 +9,106 @@ import {
   ScrollView,
   StatusBar,
 } from "react-native";
-import { FlatGrid, SectionGrid } from "react-native-super-grid";
-import { MaterialIcons, SimpleLineIcons, Fontisto } from "@expo/vector-icons";
-
+import { FlatGrid} from "react-native-super-grid";
+import {
+  AntDesign,
+  Ionicons,
+  Fontisto,
+  MaterialIcons,
+} from "@expo/vector-icons";
+import ListView from "../components/ListView"
 
 const HomeScreen = ({ navigation }) => {
   const [items, setItems] = React.useState([
-    { name: "TURQUOISE", code: "#1abc9c" },
-    { name: "EMERALD", code: "#2ecc71" },
-    { name: "PETER RIVER", code: "#3498db" },
-    { name: "AMETHYST", code: "#9b59b6" },
-    { name: "WET ASPHALT", code: "#34495e" },
-    { name: "GREEN SEA", code: "#16a085" },
-    { name: "NEPHRITIS", code: "#27ae60" },
-    { name: "BELIZE HOLE", code: "#2980b9" },
-    { name: "WISTERIA", code: "#8e44ad" },
-    { name: "MIDNIGHT BLUE", code: "#2c3e50" },
-    { name: "SUN FLOWER", code: "#f1c40f" },
-    { name: "CARROT", code: "#e67e22" },
-    { name: "ALIZARIN", code: "#e74c3c" },
-    { name: "CLOUDS", code: "#ecf0f1" },
-    { name: "CONCRETE", code: "#95a5a6" },
-    { name: "ORANGE", code: "#f39c12" },
-    { name: "PUMPKIN", code: "#d35400" },
-    { name: "POMEGRANATE", code: "#c0392b" },
-    { name: "SILVER", code: "#bdc3c7" },
-    { name: "ASBESTOS", code: "#7f8c8d" },
+    {
+      name: "BUY GOODS",
+      code: "#1abc9c",
+      icon: (
+        <MaterialIcons
+          name="add-shopping-cart"
+          size={40}
+          color="white"
+          style={styles.icon}
+        />
+      ),
+    },
+    {
+      name: "SEND COUPON",
+      code: "#2ecc71",
+      icon: (
+        <Ionicons
+          name="ios-share-outline"
+          size={40}
+          color="white"
+          style={styles.icon}
+        />
+      ),
+    },
+    {
+      name: "DEPOSIT",
+      code: "#3498db",
+      icon: (
+        <AntDesign
+          name="download"
+          size={40}
+          color="white"
+          style={styles.icon}
+        />
+      ),
+    },
+    {
+      name: "WITHDRAW",
+      code: "#9b59b6",
+      icon: (
+        <Ionicons
+          name="cash-outline"
+          size={40}
+          color="white"
+          style={styles.icon}
+        />
+      ),
+    },
   ]);
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <View style={styles.head}>
-          <Text style={styles.paragraph}>Welcome to our Home Screen</Text>
-          <View
-            style={{
-              flexDirection: "row",
-              height: 100,
-              padding: 20,
-              justifyContent: "space-evenly",
-              
-            }}
-          >
-            <MaterialIcons name="qr-code-scanner" size={50} color="white" />
-            <SimpleLineIcons name="wallet" size={50} color="white" />
-            <Fontisto name="ticket" size={50} color="white" />
-          </View>
-        </View>
-        <View style={styles.griContainer}>
-          <FlatGrid
-            itemDimension={130}
-            data={items}
-            style={styles.gridView}
-            // staticDimension={300}
-            // fixed
-            // horizontal
-            spacing={10}
-            renderItem={({ item }) => (
-              <View
-                style={[styles.itemContainer, { backgroundColor: item.code }]}
-              >
-                <Text style={styles.itemName}>{item.name}</Text>
-                <Text style={styles.itemCode}>{item.code}</Text>
-              </View>
-            )}
-          />
-          <Pressable
-            onPress={() => navigation.openDrawer()}
-            style={{ padding: 10, marginBottom: 10, marginTop: 10 }}
-          >
-            <Text>Open Drawer</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <View style={styles.head}>
+        <Text style={styles.paragraph}>Welcome Ras! 👋</Text>
+        <Text style={styles.balanceText}>TOTAL BALANCE</Text>
+        <Text style={styles.balance}>$ 100.02</Text>
+      </View>
+      <View style={styles.griContainer}>
+        <FlatGrid
+          itemDimension={130}
+          data={items}
+          style={styles.gridView}
+          // staticDimension={300}
+          // fixed
+          // horizontal
+          spacing={10}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => {}}
+              style={[
+                styles.itemContainer,
+                { backgroundColor: item.code ? item.code : "#" },
+              ]}
+            >
+              {item.icon}
+
+              <Text style={styles.itemName}>{item.name}</Text>
+              <Text style={styles.itemCode}></Text>
+            </TouchableOpacity>
+          )}
+        />
+      
+      </View>
+      <ListView />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  scrollView: {
-    // backgroundColor: "pink",
-    marginHorizontal: 20,
-  },
+
   griContainer: {
     display: "flex",
     height: "100%",
@@ -99,40 +118,67 @@ const styles = StyleSheet.create({
     paddingTop: StatusBar.currentHeight,
   },
   head: {
-    backgroundColor: "red",
+    backgroundColor: "#2980b9",
     textAlign: "center",
-    height: "14%",
+    height: "30%",
   },
   paragraph: {
-    margin: 24,
-    marginTop: 0,
-    fontSize: 34,
+    margin: 20,
+    marginTop: 25,
+    fontSize: 28,
     fontWeight: "bold",
     textAlign: "center",
     color: "#FFF",
   },
+  icon: {
+    paddingTop:25,
+    width: 100,
+    paddingLeft: "40%",
+  },
+  iconText: {
+    fontSize: 14,
+    fontWeight: "500",
+    textAlign: "center",
+    color: "#FFF",
+    paddingTop: 10,
+  },
+  balanceText: {
+    fontSize: 13,
+    fontWeight: "700",
+    textAlign: "center",
+    color: "#FFF",
+  },
+  balance: {
+    paddingTop: 5,
+    fontSize: 48,
+    fontWeight: "300",
+    textAlign: "center",
+    color: "#FFF",
+  },
   gridView: {
-    marginTop: -40,
+    // marginTop: -50,
     flex: 1,
   },
   itemContainer: {
-    justifyContent: "flex-end",
+    justifyContent: "center",
     borderRadius: 5,
     padding: 10,
     height: 150,
+    shadowColor: "#D3D3D3",
   },
   itemName: {
     fontSize: 16,
     color: "#fff",
     fontWeight: "600",
     textAlign: "center",
+    paddingTop:20
   },
   itemCode: {
     fontWeight: "600",
     fontSize: 12,
     color: "#fff",
     textAlign: "center",
-    paddingBottom: 50,
+    paddingBottom: 40,
   },
 });
 
