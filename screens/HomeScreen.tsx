@@ -30,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
           spacing={10}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => {}}
+              onPress={() => navigation.navigate("BuyGoodsScreen")}
               style={[
                 styles.itemContainer,
                 { backgroundColor: item.code ? item.code : "#" },
@@ -70,18 +70,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#FFF",
-  },
-  icon: {
-    paddingTop: 25,
-    width: 100,
-    paddingLeft: "40%",
-  },
-  iconText: {
-    fontSize: 14,
-    fontWeight: "500",
-    textAlign: "center",
-    color: "#FFF",
-    paddingTop: 10,
   },
   balanceText: {
     fontSize: 13,

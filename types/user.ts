@@ -1,4 +1,4 @@
-// @types.todo.ts
+// @types.user.ts
 export interface IUser {
     id: number;
     email: any;
