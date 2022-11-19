@@ -1,11 +1,11 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { SectionGrid } from "react-native-super-grid";
 import { goodsGridItems } from "../components/gridItems";
 
 const BuyGoodsScreen = ({ navigation }) => {
   const [items, setItems] = React.useState(goodsGridItems);
-  let Logo = require("../assets/logo.png");
+  let Logo = require("../assets/logozuva.png");
   return (
     <SectionGrid
       itemDimension={90}
@@ -25,16 +25,23 @@ const BuyGoodsScreen = ({ navigation }) => {
       ]}
       style={styles.gridView}
       renderItem={({ item, section, index }) => (
-        <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+        <TouchableOpacity
+          // style={[styles.itemContainer, { backgroundColor: item.code }]}
+          style={[styles.itemContainer]}
+          onPress={() =>
+            navigation.navigate("PurchaseScreen", {
+              item: item.name,
+              image: item.logoUrl
+            })
+          }
+        >
           <View style={styles.logo}>
-            <Image source={Logo} style={{ width: 100, height: 70 }} />
-            <Text style={styles.itemCode}></Text>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemCode}></Text>
+            <Image source={item.logoUrl} style={{ width: 100, height: 70 }} />
 
-   
+            <Text style={styles.itemName}>{item.name}</Text>
+            <Text style={styles.itemCode}>{''}</Text>
           </View>
-        </View>
+        </TouchableOpacity>
       )}
       renderSectionHeader={({ section }) => (
         <Text style={styles.sectionHeader}>{section.title}</Text>
@@ -52,20 +59,20 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     borderRadius: 5,
     padding: 5,
-    height: 130,
+    height: 120,
     borderColor: "#2c3e50",
     borderWidth: 1,
     borderStyle: "solid",
   },
   itemName: {
-    fontSize: 12,
-    color: "#fff",
-    fontWeight: "600",
+    fontSize: 13,
+    color: "#2c3e50",
+    fontWeight: "700",
   },
   itemCode: {
     fontWeight: "600",
     fontSize: 12,
-    color: "#fff",
+    color: "#2c3e50",
   },
   sectionHeader: {
     flex: 1,

@@ -8,7 +8,8 @@ import VerificationScreen from "./screens/VerificationScreen";
 import ResetPasswordScreen from "./screens/ResetScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import HomeScreen from "./screens/HomeScreen";
-import BuyGoodsScreen from './screens/BuyGoodsScreen'
+import BuyGoodsScreen from "./screens/BuyGoodsScreen";
+import PurchaseScreen from "./screens/PurchaseScreen"
 import { useWindowDimensions } from "react-native";
 import UserProvider from "./context/UserContext";
 import CustomIcon from "./components/Icon";
@@ -132,7 +133,7 @@ export default function App() {
                 color: "#34495e",
               },
 
-              headerTitle: "Cuopons ZW",
+              headerTitle: "coupons ZW",
             })}
           />
 
@@ -161,11 +162,37 @@ export default function App() {
                   name={"md-arrow-back"}
                   color={"#2c3e50"}
                   size={30}
-                  onPress={() => navigation.navigate("HomeScreen")} 
+                  onPress={() => navigation.navigate("HomeScreen")}
                 />
               ),
               headerRight: null,
-              title: "Dashboard"
+            })}
+          />
+
+          <Drawer.Screen
+            name="PurchaseScreen"
+            component={PurchaseScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerStyle: {
+                backgroundColor: "#FFFFFF",
+              },
+              headerTitleStyle: {
+                color: "#FFFFFF",
+              },
+              headerLeft: () => (
+                <CustomIcon
+                  name={"md-arrow-back"}
+                  color={"#2c3e50"}
+                  size={30}
+                  onPress={() => navigation.navigate("BuyGoodsScreen")}
+                />
+              ),
+              headerRight: null,
+              title: "PurchaseScreen",
             })}
           />
         </Drawer.Navigator>
