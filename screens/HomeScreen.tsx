@@ -12,6 +12,26 @@ import { menuItems } from "../components/gridItems";
 import ListView from "../components/ListView";
 
 const HomeScreen = ({ navigation }) => {
+  const menuSelector = (arg: string) => {
+    switch (arg) {
+      case "buy":
+        //Statements executed when the
+        //result of expression matches value1
+        navigation.navigate("BuyGoodsScreen");
+
+      case "deposit":
+      //Statements executed when the
+      //result of expression matches value2
+
+      case "send_coupon":
+      //Statements executed when the
+      //result of expression matches valueN
+
+      case "withdraw":
+      //Statements executed when the
+      //result of expression matches valueN
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.head}>
@@ -30,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
           spacing={10}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate("BuyGoodsScreen")}
+              onPress={() => menuSelector(item.type)}
               style={[
                 styles.itemContainer,
                 { backgroundColor: item.code ? item.code : "#" },

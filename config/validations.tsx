@@ -26,4 +26,10 @@ export default {
   otp: {
     required: { value: true, message: "OTP is required" },
   },
+  quantity: {
+    required: { value: true, message: "quantity is required" },
+  },
+  merchant: {
+    required: { value: true, message: "merchant code is required" },
+  },
 };

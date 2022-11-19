@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, Alert } from "react-native";
+import { StyleSheet, Text, View, Image,ScrollView } from "react-native";
 // import piggyLogo from "../assets/piggy.svg";
 import { useForm, Controller } from "react-hook-form";
 import Toast from "react-native-root-toast";
@@ -41,13 +41,13 @@ const LoginScreen = ({ navigation }) => {
   let Logo = require("../assets/logo.png");
 
   return (
-    <View style={styles.main}>
+    <ScrollView  style={styles.main}>
       <View style={styles.logo}>
         <Image source={Logo} style={{ width: 100, height: 100 }} />
       </View>
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
-          <Input name="phone" label="Phone Number" />
+          <Input name="phone" label="Phone Number" keyboardType={"numeric"} />
           <Input name="password" label="Password" secureTextEntry={true} />
 
           <Button onPress={handleSubmit(onSubmit)} variant="" title="LOGIN" />
@@ -69,7 +69,7 @@ const LoginScreen = ({ navigation }) => {
           title="Forgot Password ?"
         />
       </View>
-    </View>
+    </ScrollView >
   );
 };
 

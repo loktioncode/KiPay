@@ -8,7 +8,7 @@ const BuyGoodsScreen = ({ navigation }) => {
   let Logo = require("../assets/logozuva.png");
   return (
     <SectionGrid
-      itemDimension={90}
+      itemDimension={95}
       sections={[
         {
           title: "Basic Commodities",
@@ -31,12 +31,13 @@ const BuyGoodsScreen = ({ navigation }) => {
           onPress={() =>
             navigation.navigate("PurchaseScreen", {
               item: item.name,
-              image: item.logoUrl
+              image: item.logoUrl,
+              metric: item.metric
             })
           }
         >
           <View style={styles.logo}>
-            <Image source={item.logoUrl} style={{ width: 100, height: 70 }} />
+            <Image source={item.logoUrl} style={{ width: 130, height: 70 }} />
 
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemCode}>{''}</Text>
@@ -58,14 +59,14 @@ const styles = StyleSheet.create({
   itemContainer: {
     justifyContent: "flex-end",
     borderRadius: 5,
-    padding: 5,
-    height: 120,
+    paddingBottom: 10,
+    height: 130,
     borderColor: "#2c3e50",
     borderWidth: 1,
     borderStyle: "solid",
   },
   itemName: {
-    fontSize: 13,
+    fontSize: 16,
     color: "#2c3e50",
     fontWeight: "700",
   },
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "600",
     alignItems: "center",
-    backgroundColor: "#2c3e50",
+    backgroundColor: "#2980b9",
     color: "white",
     padding: 10,
   },
