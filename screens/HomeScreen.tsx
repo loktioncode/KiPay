@@ -16,11 +16,15 @@ const HomeScreen = ({ navigation }) => {
     switch (menuItem) {
       case "buy":
         navigation.navigate("BuyGoodsScreen");
+        break;
       case "deposit":
+        navigation.navigate("DepositScreen");
         break;
       case "send_coupon":
         navigation.navigate("SendCouponScreen");
+        break;
       case "withdraw":
+        navigation.navigate("WithdrawScreen");
         break;
       default:
         break;

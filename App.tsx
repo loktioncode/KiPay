@@ -11,6 +11,8 @@ import HomeScreen from "./screens/HomeScreen";
 import BuyGoodsScreen from "./screens/BuyGoodsScreen";
 import ActionsScreen from "./screens/ActionsScreen";
 import SendCouponScreen from "./screens/SendCouponScreen";
+import DepositScreen from "./screens/DepositScreen";
+import WithdrawScreen from "./screens/WithdrawScreen";
 import { useWindowDimensions } from "react-native";
 import UserProvider from "./context/UserContext";
 import CustomIcon from "./components/Icon";
@@ -221,6 +223,60 @@ export default function App() {
               ),
               headerRight: null,
               title: "SendCouponScreen",
+            })}
+          />
+
+          <Drawer.Screen
+            name="DepositScreen"
+            component={DepositScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerStyle: {
+                backgroundColor: "#FFFFFF",
+              },
+              headerTitleStyle: {
+                color: "#FFFFFF",
+              },
+              headerLeft: () => (
+                <CustomIcon
+                  name={"md-arrow-back"}
+                  color={"#2c3e50"}
+                  size={30}
+                  onPress={() => navigation.navigate("HomeScreen")}
+                />
+              ),
+              headerRight: null,
+              title: "DepositScreen",
+            })}
+          />
+
+          <Drawer.Screen
+            name="WithdrawScreen"
+            component={WithdrawScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerStyle: {
+                backgroundColor: "#FFFFFF",
+              },
+              headerTitleStyle: {
+                color: "#FFFFFF",
+              },
+              headerLeft: () => (
+                <CustomIcon
+                  name={"md-arrow-back"}
+                  color={"#2c3e50"}
+                  size={30}
+                  onPress={() => navigation.navigate("WithdrawScreen")}
+                />
+              ),
+              headerRight: null,
+              title: "WithdrawScreen",
             })}
           />
         </Drawer.Navigator>
