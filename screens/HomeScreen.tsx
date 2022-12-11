@@ -63,7 +63,6 @@ const HomeScreen = ({ navigation }) => {
           )}
         />
       </View>
-      <ListView />
     </View>
   );
 };

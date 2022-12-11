@@ -195,7 +195,7 @@ export default function App() {
                 />
               ),
               headerRight: null,
-              title: "ActionsScreen",
+              title: "",
             })}
           />
 
@@ -238,7 +238,7 @@ export default function App() {
                 backgroundColor: "#FFFFFF",
               },
               headerTitleStyle: {
-                color: "#FFFFFF",
+                color:"#2c3e50"
               },
               headerLeft: () => (
                 <CustomIcon
@@ -249,7 +249,7 @@ export default function App() {
                 />
               ),
               headerRight: null,
-              title: "DepositScreen",
+              title: "Deposit Funds",
             })}
           />
 
