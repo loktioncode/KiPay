@@ -9,7 +9,7 @@ import {
   Modal,
   Pressable,
 } from "react-native";
-
+import StepIndicator from 'react-native-step-indicator';
 import { useForm, Controller } from "react-hook-form";
 
 // You can import from local files

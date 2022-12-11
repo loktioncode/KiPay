@@ -8,13 +8,9 @@ import {
   Modal,
   Pressable,
 } from "react-native";
-import { useForm } from "react-hook-form";
-import { goodsGridItems } from "../components/gridItems";
-import Input from "../components/Input";
-import Form from "../components/Form";
-import validation from "../config/validations";
+
 import Button from "../components/Button";
-import { labels, customStyles } from "./stepperStyles";
+import { customStyles } from "./stepperStyles";
 import StepIndicator from "react-native-step-indicator";
 import DepositForm from "../components/deposit_flow/depositForm";
 import DepositOrder from "../components/deposit_flow/depositOrder";
@@ -25,10 +21,11 @@ type FormData = {
 };
 
 const DepositScreen = ({ route, navigation }) => {
-  const { handleSubmit, register, setValue, errors, getValues, reset } =
-    useForm<FormData>();
-
-  const [data, purchaseData] = React.useState<FormData>(null);
+  const labels = [
+    "Create Order",
+    "Order Details",
+    "Order Status"
+  ];
   const [currentPosition, setCurrentPosition] = React.useState(0);
 
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -36,19 +33,6 @@ const DepositScreen = ({ route, navigation }) => {
   React.useEffect(() => {
     setCurrentPosition(0);
   }, []);
-
-  const onSubmit = (data: FormData) => {
-    // setCurrentPosition(1);
-    // setModalVisible(true);
-    // reset(
-    //   {},
-    //   {
-    //     errors: false,
-    //     dirty: false,
-    //     dirtyFields: false,
-    //   }
-    // );
-  };
 
   const depositComplete = (
     <View style={styles.infoContainer}>
@@ -90,7 +74,7 @@ const DepositScreen = ({ route, navigation }) => {
             </View>
             <View>
               <Text style={styles.modalParagraph}>Amount to be Sent!</Text>
-              <Text style={styles.modalParagraph}>$ {getValues("amount")}</Text>
+              <Text style={styles.modalParagraph}>$ 10.50</Text>
             </View>
             <Pressable
               style={[styles.button, styles.buttonClose]}
@@ -105,7 +89,7 @@ const DepositScreen = ({ route, navigation }) => {
         <StepIndicator
           customStyles={customStyles}
           currentPosition={currentPosition}
-          // labels={labels}
+          labels={labels}
           stepCount={stepperContent.length}
         />
       </View>
