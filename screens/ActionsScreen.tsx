@@ -66,7 +66,7 @@ const ActionsScreen = ({ route, navigation }) => {
             </View>
 
             <View>
-              {route.params.action === "send" ? (
+              {route?.params?.action === "send" ? (
                 <Text style={styles.paragraph}>
                   Amount to be Sent!
                 </Text>
@@ -100,12 +100,12 @@ const ActionsScreen = ({ route, navigation }) => {
       )}
       <View style={styles.container}>
         <Text style={styles.paragraph}>
-          {route.params.action === "send"
+          {route?.params?.action === "send"
             ? "Send Coupon"
             : `BUY ` + route.params.item}
         </Text>
         <Form {...{ register, setValue, validation, errors }}>
-          {route.params.action === "send" ? (
+          {route?.params?.action === "send" ? (
             <>
               <Input
                 name="recipient"
@@ -146,7 +146,7 @@ const ActionsScreen = ({ route, navigation }) => {
           <Button
             onPress={handleSubmit(onSubmit)}
             variant=""
-            title={route.params.action === "send" ? "SEND" : "BUY"}
+            title={route?.params?.action === "send" ? "SEND" : "BUY"}
           />
         </Form>
       </View>

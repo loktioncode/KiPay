@@ -272,7 +272,7 @@ export default function App() {
                   name={"md-arrow-back"}
                   color={"#2c3e50"}
                   size={30}
-                  onPress={() => navigation.navigate("WithdrawScreen")}
+                  onPress={() => navigation.navigate("HomeScreen")}
                 />
               ),
               headerRight: null,

@@ -25,15 +25,13 @@ type FormData = {
   amount: number;
 };
 
-const ActionsScreen = ({ route, navigation }) => {
+const WithdrawScreen = ({ route, navigation }) => {
   const { handleSubmit, register, setValue, errors, getValues, reset } =
     useForm<FormData>();
 
   const [data, purchaseData] = React.useState<FormData>(null);
 
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [hide, setHide] = React.useState(false);
-  const [total, setTotal] = React.useState(0);
 
   const onSubmit = (data: FormData) => {
     setModalVisible(true);
@@ -46,8 +44,6 @@ const ActionsScreen = ({ route, navigation }) => {
     //   }
     // );
   };
-
-  const getTotal = (qty: any, price: number) => setTotal(price * parseInt(qty));
 
   return (
     <ScrollView style={styles.main}>
@@ -65,19 +61,8 @@ const ActionsScreen = ({ route, navigation }) => {
               <Text style={styles.modalText}>Confirm</Text>
             </View>
 
-            <View>
-              {route.params.action === "send" ? (
-                <Text style={styles.paragraph}>
-                  Amount to be Sent!
-                </Text>
-              ) : (
-                <Text style={styles.paragraph}>
-                  {getValues("quantity") + " " + route.params.metric}
-                </Text>
-              )}
+            <Text style={styles.paragraph}>Amount to be Sent!</Text>
 
-              <Text style={styles.total}>TOTAL: $ {total}</Text>
-            </View>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -88,65 +73,28 @@ const ActionsScreen = ({ route, navigation }) => {
         </View>
       </Modal>
 
-      {!hide ? (
-        <View style={styles.logo}>
-          <Image
-            source={route.params.image}
-            style={{ width: 200, height: 100 }}
-          />
-        </View>
-      ) : (
-        <View></View>
-      )}
       <View style={styles.container}>
-        <Text style={styles.paragraph}>
-          {route.params.action === "send"
-            ? "Send Coupon"
-            : `BUY ` + route.params.item}
-        </Text>
+        <Text style={styles.paragraph}>WITHDRAW</Text>
         <Form {...{ register, setValue, validation, errors }}>
-          {route.params.action === "send" ? (
-            <>
-              <Input
-                name="recipient"
-                label="Recipient Contact"
-                blurOnSubmit
-                keyboardType={"numeric"}
-                defaultValue=""
-              />
-              <Input
-                name="amount"
-                label={`Amount`}
-                keyboardType={"numeric"}
-                blurOnSubmit
-                defaultValue=""
-              />
-            </>
-          ) : (
-            <>
-              <Input
-                name="merchant"
-                label="Merchant"
-                blurOnSubmit
-                keyboardType={"numeric"}
-                defaultValue=""
-              />
-              <Input
-                name="quantity"
-                label={`Quantity: ${route.params.metric}`}
-                keyboardType={"numeric"}
-                blurOnSubmit
-                onFocus={hide ? () => setHide(false) : () => setHide(true)}
-                onChange={() => getTotal(getValues("quantity"), 2)}
-                defaultValue=""
-              />
-            </>
-          )}
+          <Input
+            name="merchant"
+            label="Merchant"
+            blurOnSubmit
+            keyboardType={"numeric"}
+            defaultValue=""
+          />
+          <Input
+            name="quantity"
+            label={`Quantity:`}
+            keyboardType={"numeric"}
+            blurOnSubmit
+            defaultValue=""
+          />
 
           <Button
             onPress={handleSubmit(onSubmit)}
             variant=""
-            title={route.params.action === "send" ? "SEND" : "BUY"}
+            title={route?.params?.action === "send" ? "SEND" : "BUY"}
           />
         </Form>
       </View>
@@ -272,4 +220,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ActionsScreen;
+export default WithdrawScreen;
