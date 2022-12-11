@@ -1,49 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
   View,
   Image,
   ScrollView,
-  Alert,
   Modal,
   Pressable,
 } from "react-native";
-import StepIndicator from 'react-native-step-indicator';
-import { useForm, Controller } from "react-hook-form";
 
-// You can import from local files
-import Input from "../components/Input";
-import Form from "../components/Form";
-import validation from "../config/validations";
 import Button from "../components/Button";
+import { customStyles } from "../config/stepperStyles";
+import StepIndicator from "react-native-step-indicator";
+import WithdrawForm from "../components/withdraw_flow/depositForm";
+import WithdrawOrder from "../components/withdraw_flow/depositOrder";
 
 type FormData = {
-  merchant: string;
-  quantity: number;
   recipient: number;
   amount: number;
 };
 
 const WithdrawScreen = ({ route, navigation }) => {
-  const { handleSubmit, register, setValue, errors, getValues, reset } =
-    useForm<FormData>();
-
-  const [data, purchaseData] = React.useState<FormData>(null);
+  const labels = ["Withdraw",  "Withdraw Status"];
+  const [currentPosition, setCurrentPosition] = React.useState(0);
+  let Logo = require("../assets/logozuva.png");
 
   const [modalVisible, setModalVisible] = React.useState(false);
 
-  const onSubmit = (data: FormData) => {
-    setModalVisible(true);
-    // reset(
-    //   {},
-    //   {
-    //     errors: false,
-    //     dirty: false,
-    //     dirtyFields: false,
-    //   }
-    // );
-  };
+  React.useEffect(() => {
+    setCurrentPosition(0);
+  },[]);
+
+
+  const stepperContent = [
+    <WithdrawForm setCurrentPosition={() => setCurrentPosition(1)} />,
+    <WithdrawOrder setCurrentPosition={() => setCurrentPosition(0)} />,
+  ];
 
   return (
     <ScrollView style={styles.main}>
@@ -60,9 +52,10 @@ const WithdrawScreen = ({ route, navigation }) => {
             <View>
               <Text style={styles.modalText}>Confirm</Text>
             </View>
-
-            <Text style={styles.paragraph}>Amount to be Sent!</Text>
-
+            <View>
+              <Text style={styles.modalParagraph}>Amount to be Withdrawn!</Text>
+              <Text style={styles.modalParagraph}>$ 10.50</Text>
+            </View>
             <Pressable
               style={[styles.button, styles.buttonClose]}
               onPress={() => setModalVisible(!modalVisible)}
@@ -72,31 +65,25 @@ const WithdrawScreen = ({ route, navigation }) => {
           </View>
         </View>
       </Modal>
+      <View style={{ paddingTop: 10 }}>
+        <StepIndicator
+          customStyles={customStyles}
+          currentPosition={currentPosition}
+          labels={labels}
+          stepCount={stepperContent.length}
+        />
+      </View>
 
+      {stepperContent[currentPosition]}
+      
       <View style={styles.container}>
-        <Text style={styles.paragraph}>WITHDRAW</Text>
-        <Form {...{ register, setValue, validation, errors }}>
-          <Input
-            name="merchant"
-            label="Merchant"
-            blurOnSubmit
-            keyboardType={"numeric"}
-            defaultValue=""
-          />
-          <Input
-            name="quantity"
-            label={`Quantity:`}
-            keyboardType={"numeric"}
-            blurOnSubmit
-            defaultValue=""
-          />
-
-          <Button
-            onPress={handleSubmit(onSubmit)}
-            variant=""
-            title={route?.params?.action === "send" ? "SEND" : "BUY"}
-          />
-        </Form>
+        <Image source={Logo} style={{ width: 200, height: 80 }} />
+        <Text style={styles.paragraph}>
+          1. Enter amount you want to withdraw!
+        </Text>
+        <Text style={styles.paragraph}>
+          3. Use Code/QR Code at TillPoint to Withdraw
+        </Text>
       </View>
     </ScrollView>
   );
@@ -120,11 +107,12 @@ const styles = StyleSheet.create({
   logo: {
     justifyContent: "flex-end",
     alignItems: "center",
-    height: "25%",
+    height: "45%",
     objectFit: "fill",
     backgroundColor: "#fff",
+    marginBottom: 15,
   },
-  paragraph: {
+  modalParagraph: {
     margin: 24,
     marginTop: 0,
     fontSize: 24,
@@ -133,46 +121,23 @@ const styles = StyleSheet.create({
     color: "#2c3e50",
     textTransform: "capitalize",
   },
+  paragraph: {
+    margin: 4,
+    marginTop: 0,
+    fontSize: 15,
+    fontWeight: "300",
+    textAlign: "center",
+    color: "#2c3e50",
+  },
   container: {
     flex: 1,
     alignItems: "center",
     marginTop: 15,
   },
-  input: {
-    borderColor: "#2c3e50",
-    width: "90%",
-    height: 40,
-    borderWidth: 2,
-    borderRadius: 5,
-    margin: 10,
-    padding: 25,
-  },
-
-  btnTxt: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-    color: "white",
-  },
-  outlinedButtonText: {
-    fontSize: 16,
-    lineHeight: 21,
-    fontWeight: "bold",
-    letterSpacing: 0.25,
-  },
-
-  outlinedBtn: {
-    width: "90%",
+  infoContainer: {
+    flex: 1,
     alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 4,
-    elevation: 3,
-    color: "white",
-    borderColor: "#2c3e50",
-    borderWidth: 1,
+    marginTop: 55,
   },
   centeredView: {
     flex: 1,
@@ -217,6 +182,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#2c3e50",
     textTransform: "capitalize",
+  },
+  item: {
+    backgroundColor: "#f9c2ff",
+    padding: 20,
+    marginVertical: 8,
+  },
+  header: {
+    fontSize: 32,
+    backgroundColor: "#fff",
+  },
+  title: {
+    fontSize: 24,
   },
 });
 

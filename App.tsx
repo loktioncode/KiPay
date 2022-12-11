@@ -6,7 +6,7 @@ import LoginScreen from "./screens/LoginScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import VerificationScreen from "./screens/VerificationScreen";
 import ResetPasswordScreen from "./screens/ResetScreen";
-import DashboardScreen from "./screens/DashboardScreen";
+import HistoryScreen from "./screens/HistoryScreen";
 import HomeScreen from "./screens/HomeScreen";
 import BuyGoodsScreen from "./screens/BuyGoodsScreen";
 import ActionsScreen from "./screens/ActionsScreen";
@@ -33,7 +33,7 @@ export default function App() {
           screenOptions={{
             headerShown: true,
             drawerType: isLargeScreen ? "permanent" : "back",
-            drawerStyle: isLargeScreen ? null : { width: "100%" },
+            drawerStyle: isLargeScreen ? null : { width: "80%" },
           }}
         >
           <Drawer.Screen
@@ -42,6 +42,9 @@ export default function App() {
             options={{
               headerShown: false,
               title: "Login",
+              drawerItemStyle: {
+                display: "none",
+              },
             }}
           />
 
@@ -135,15 +138,42 @@ export default function App() {
               headerTitleStyle: {
                 color: "#34495e",
               },
-
               headerTitle: "coupons ZW",
+              title: "Home",
+              headerLeft: null,
+              headerRight: () => (
+                <CustomIcon
+                  name={"md-arrow-back"}
+                  color={"#2c3e50"}
+                  size={30}
+                  onPress={() => navigation.navigate("HomeScreen")}
+                />
+              ),
             })}
           />
 
           <Drawer.Screen
-            name="DashboardScreen"
-            component={DashboardScreen}
-            options={{ title: "Dashboard" }}
+            name="HistoryScreen"
+            component={HistoryScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              headerStyle: {
+                backgroundColor: "#FFFFFF",
+              },
+              headerTitleStyle: {
+                color: "#2c3e50",
+              },
+              headerLeft: () => (
+                <CustomIcon
+                  name={"md-arrow-back"}
+                  color={"#2c3e50"}
+                  size={30}
+                  onPress={() => navigation.navigate("HomeScreen")}
+                />
+              ),
+              headerRight: null,
+              title: "History",
+            })}
           />
 
           <Drawer.Screen
@@ -222,7 +252,7 @@ export default function App() {
                 />
               ),
               headerRight: null,
-              title: "SendCouponScreen",
+              title: "Send Coupons",
             })}
           />
 
@@ -238,7 +268,7 @@ export default function App() {
                 backgroundColor: "#FFFFFF",
               },
               headerTitleStyle: {
-                color:"#2c3e50"
+                color: "#2c3e50",
               },
               headerLeft: () => (
                 <CustomIcon
@@ -265,7 +295,7 @@ export default function App() {
                 backgroundColor: "#FFFFFF",
               },
               headerTitleStyle: {
-                color: "#FFFFFF",
+                color: "#2c3e50",
               },
               headerLeft: () => (
                 <CustomIcon
@@ -276,7 +306,7 @@ export default function App() {
                 />
               ),
               headerRight: null,
-              title: "WithdrawScreen",
+              title: "Withdraw Funds",
             })}
           />
         </Drawer.Navigator>

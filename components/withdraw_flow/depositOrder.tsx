@@ -13,10 +13,10 @@ const DepositOrder = (props: any) => {
       </View>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.paragraph}>Order Number:</Text>
+        <Text style={styles.paragraph}>Withdrawal Cuopon Code:</Text>
         <Text style={styles.title}>#22435ZW</Text>
 
-        <Text style={styles.paragraph}>Deposit Amount:</Text>
+        <Text style={styles.paragraph}>Withdrawal Amount:</Text>
         <Text style={styles.title}>$10.50</Text>
       </View>
     </View>

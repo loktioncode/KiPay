@@ -47,7 +47,7 @@ const DepositForm = (props: any) => {
       <Form {...{ register, setValue, validation, errors }}>
         <Input
           name="amount"
-          label="Deposit Amount"
+          label="Withdraw Amount"
           blurOnSubmit
           keyboardType={"numeric"}
           defaultValue=""
@@ -55,7 +55,7 @@ const DepositForm = (props: any) => {
         <Button
           onPress={handleSubmit(onSubmit)}
           variant=""
-          title={"Confrim Order"}
+          title={"Withdraw"}
         />
       </Form>
     </View>

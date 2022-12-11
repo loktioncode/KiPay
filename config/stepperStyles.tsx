@@ -1,31 +1,25 @@
-export const labels = [
-  "Create Order",
-  "Order Details",
-  "Order Summary",
-  "Payment Method",
-  "Track",
-];
+
 
 export const customStyles = {
   stepIndicatorSize: 25,
   currentStepIndicatorSize: 30,
   separatorStrokeWidth: 2,
   currentStepStrokeWidth: 3,
-  stepStrokeCurrentColor: "#fe7013",
+  stepStrokeCurrentColor: "#2c3e50",
   stepStrokeWidth: 3,
-  stepStrokeFinishedColor: "#fe7013",
+  stepStrokeFinishedColor: "#2c3e50",
   stepStrokeUnFinishedColor: "#aaaaaa",
-  separatorFinishedColor: "#fe7013",
+  separatorFinishedColor: "#2c3e50",
   separatorUnFinishedColor: "#aaaaaa",
-  stepIndicatorFinishedColor: "#fe7013",
+  stepIndicatorFinishedColor: "#2c3e50",
   stepIndicatorUnFinishedColor: "#ffffff",
   stepIndicatorCurrentColor: "#ffffff",
   stepIndicatorLabelFontSize: 13,
   currentStepIndicatorLabelFontSize: 13,
-  stepIndicatorLabelCurrentColor: "#fe7013",
+  stepIndicatorLabelCurrentColor: "#2c3e50",
   stepIndicatorLabelFinishedColor: "#ffffff",
   stepIndicatorLabelUnFinishedColor: "#aaaaaa",
   labelColor: "#999999",
   labelSize: 13,
-  currentStepLabelColor: "#fe7013",
+  currentStepLabelColor: "#2c3e50",
 };

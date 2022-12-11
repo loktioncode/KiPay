@@ -10,7 +10,7 @@ import {
 } from "react-native";
 
 import Button from "../components/Button";
-import { customStyles } from "./stepperStyles";
+import { customStyles } from "../config/stepperStyles";
 import StepIndicator from "react-native-step-indicator";
 import DepositForm from "../components/deposit_flow/depositForm";
 import DepositOrder from "../components/deposit_flow/depositOrder";
@@ -21,18 +21,15 @@ type FormData = {
 };
 
 const DepositScreen = ({ route, navigation }) => {
-  const labels = [
-    "Create Order",
-    "Order Details",
-    "Order Status"
-  ];
+  const labels = ["Create Order", "Order Details", "Order Status"];
   const [currentPosition, setCurrentPosition] = React.useState(0);
+  let Logo = require("../assets/logozuva.png");
 
   const [modalVisible, setModalVisible] = React.useState(false);
 
   React.useEffect(() => {
     setCurrentPosition(0);
-  }, []);
+  },[]);
 
   const depositComplete = (
     <View style={styles.infoContainer}>
@@ -95,8 +92,17 @@ const DepositScreen = ({ route, navigation }) => {
       </View>
 
       {stepperContent[currentPosition]}
-
-      {/* {DepositHistoryFlatList} */}
+      
+      <View style={styles.container}>
+        <Image source={Logo} style={{ width: 200, height: 80 }} />
+        <Text style={styles.paragraph}>
+          1. Enter amount you want to deposit!
+        </Text>
+        <Text style={styles.paragraph}>2. Confirm order</Text>
+        <Text style={styles.paragraph}>
+          3. Use order number at TillPoint to deposit
+        </Text>
+      </View>
     </ScrollView>
   );
 };

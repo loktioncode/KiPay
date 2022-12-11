@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
 
-const DashboardScreen = () => {
+const HistoryScreen = () => {
     return (
       <View style={styles.container}>
       <Text> test</Text>
@@ -24,4 +24,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default DashboardScreen;
+export default HistoryScreen;

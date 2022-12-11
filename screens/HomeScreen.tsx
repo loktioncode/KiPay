@@ -62,24 +62,51 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
           )}
         />
+        <View style={styles.row}>
+          <View style={styles.square} />
+          <View style={styles.pay} />
+          <View style={styles.square} />
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  row: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+
+  },
+  pay: {
+    backgroundColor: "#fff",
+    width: 90,
+    height: 90,
+    margin: 25,
+    borderRadius: 45,
+  },
+  square: {
+    backgroundColor: "#7cb48f",
+    width: 60,
+    height: 60,
+    margin: 25,
+    borderRadius: 30,
+  },
   griContainer: {
     display: "flex",
-    height: "100%",
+    height: "85%",
   },
   container: {
+    backgroundColor: "#2980b9",
     flex: 1,
     paddingTop: StatusBar.currentHeight,
   },
   head: {
     backgroundColor: "#2980b9",
     textAlign: "center",
-    height: "30%",
+    height: "25%",
   },
   paragraph: {
     margin: 20,
@@ -103,7 +130,6 @@ const styles = StyleSheet.create({
     color: "#FFF",
   },
   gridView: {
-    // marginTop: -50,
     flex: 1,
   },
   itemContainer: {
