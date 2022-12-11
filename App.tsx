@@ -9,7 +9,8 @@ import ResetPasswordScreen from "./screens/ResetScreen";
 import DashboardScreen from "./screens/DashboardScreen";
 import HomeScreen from "./screens/HomeScreen";
 import BuyGoodsScreen from "./screens/BuyGoodsScreen";
-import PurchaseScreen from "./screens/PurchaseScreen"
+import ActionsScreen from "./screens/ActionsScreen";
+import SendCouponScreen from "./screens/SendCouponScreen";
 import { useWindowDimensions } from "react-native";
 import UserProvider from "./context/UserContext";
 import CustomIcon from "./components/Icon";
@@ -170,8 +171,8 @@ export default function App() {
           />
 
           <Drawer.Screen
-            name="PurchaseScreen"
-            component={PurchaseScreen}
+            name="ActionsScreen"
+            component={ActionsScreen}
             options={({ navigation }) => ({
               headerShown: true,
               drawerItemStyle: {
@@ -192,7 +193,34 @@ export default function App() {
                 />
               ),
               headerRight: null,
-              title: "PurchaseScreen",
+              title: "ActionsScreen",
+            })}
+          />
+
+          <Drawer.Screen
+            name="SendCouponScreen"
+            component={SendCouponScreen}
+            options={({ navigation }) => ({
+              headerShown: true,
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerStyle: {
+                backgroundColor: "#FFFFFF",
+              },
+              headerTitleStyle: {
+                color: "#FFFFFF",
+              },
+              headerLeft: () => (
+                <CustomIcon
+                  name={"md-arrow-back"}
+                  color={"#2c3e50"}
+                  size={30}
+                  onPress={() => navigation.navigate("HomeScreen")}
+                />
+              ),
+              headerRight: null,
+              title: "SendCouponScreen",
             })}
           />
         </Drawer.Navigator>

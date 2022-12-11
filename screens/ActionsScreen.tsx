@@ -21,9 +21,11 @@ import Button from "../components/Button";
 type FormData = {
   merchant: string;
   quantity: number;
+  recipient: number;
+  amount: number;
 };
 
-const PurchaseScreen = ({ route, navigation }) => {
+const ActionsScreen = ({ route, navigation }) => {
   const { handleSubmit, register, setValue, errors, getValues, reset } =
     useForm<FormData>();
 
@@ -60,13 +62,19 @@ const PurchaseScreen = ({ route, navigation }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View>
-              <Text style={styles.modalText}>Confirm Purchase</Text>
+              <Text style={styles.modalText}>Confirm</Text>
             </View>
 
             <View>
-              <Text style={styles.paragraph}>
-                {getValues("quantity") + " " + route.params.metric}
-              </Text>
+              {route.params.action === "send" ? (
+                <Text style={styles.paragraph}>
+                  Amount to be Sent!
+                </Text>
+              ) : (
+                <Text style={styles.paragraph}>
+                  {getValues("quantity") + " " + route.params.metric}
+                </Text>
+              )}
 
               <Text style={styles.total}>TOTAL: $ {total}</Text>
             </View>
@@ -91,26 +99,55 @@ const PurchaseScreen = ({ route, navigation }) => {
         <View></View>
       )}
       <View style={styles.container}>
-        <Text style={styles.paragraph}>{route.params.item}</Text>
+        <Text style={styles.paragraph}>
+          {route.params.action === "send"
+            ? "Send Coupon"
+            : `BUY ` + route.params.item}
+        </Text>
         <Form {...{ register, setValue, validation, errors }}>
-          <Input
-            name="merchant"
-            label="Merchant"
-            blurOnSubmit
-            keyboardType={"numeric"}
-            defaultValue=""
-          />
-          <Input
-            name="quantity"
-            label={`Quantity: ${route.params.metric}`}
-            keyboardType={"numeric"}
-            blurOnSubmit
-            onFocus={hide ? () => setHide(false) : () => setHide(true)}
-            onChange={() => getTotal(getValues("quantity"), 2)}
-            defaultValue=""
-          />
+          {route.params.action === "send" ? (
+            <>
+              <Input
+                name="recipient"
+                label="Recipient Contact"
+                blurOnSubmit
+                keyboardType={"numeric"}
+                defaultValue=""
+              />
+              <Input
+                name="amount"
+                label={`Amount`}
+                keyboardType={"numeric"}
+                blurOnSubmit
+                defaultValue=""
+              />
+            </>
+          ) : (
+            <>
+              <Input
+                name="merchant"
+                label="Merchant"
+                blurOnSubmit
+                keyboardType={"numeric"}
+                defaultValue=""
+              />
+              <Input
+                name="quantity"
+                label={`Quantity: ${route.params.metric}`}
+                keyboardType={"numeric"}
+                blurOnSubmit
+                onFocus={hide ? () => setHide(false) : () => setHide(true)}
+                onChange={() => getTotal(getValues("quantity"), 2)}
+                defaultValue=""
+              />
+            </>
+          )}
 
-          <Button onPress={handleSubmit(onSubmit)} variant="" title="BUY" />
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            variant=""
+            title={route.params.action === "send" ? "SEND" : "BUY"}
+          />
         </Form>
       </View>
     </ScrollView>
@@ -209,7 +246,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: 250,
+    width: 350,
   },
   button: {
     borderRadius: 20,
@@ -235,4 +272,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default PurchaseScreen;
+export default ActionsScreen;

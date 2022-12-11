@@ -3,23 +3,24 @@ import { StyleSheet, View, Text, Image, TouchableOpacity } from "react-native";
 import { SectionGrid } from "react-native-super-grid";
 import { goodsGridItems } from "../components/gridItems";
 
-const BuyGoodsScreen = ({ navigation }) => {
+const SendCouponScreen = ({ route, navigation }) => {
   const [items, setItems] = React.useState(goodsGridItems);
   let Logo = require("../assets/logozuva.png");
+
   return (
     <SectionGrid
       itemDimension={95}
       sections={[
         {
-          title: "Basic Commodities",
+          title: "Your Coupons",
           data: items.slice(0, 6),
         },
         {
-          title: "Travel & Tourism",
+          
           data: items.slice(6, 12),
         },
         {
-          title: "Soft Life",
+     
           data: items.slice(12, 20),
         },
       ]}
@@ -32,16 +33,15 @@ const BuyGoodsScreen = ({ navigation }) => {
             navigation.navigate("ActionsScreen", {
               item: item.name,
               image: item.logoUrl,
-              metric: item.metric,
-              action: "buy"
+              action: "send"
             })
           }
         >
           <View style={styles.logo}>
             <Image source={item.logoUrl} style={{ width: 130, height: 70 }} />
 
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemCode}>{''}</Text>
+            <Text style={styles.itemName}>{"$100"}</Text>
+            <Text style={styles.itemCode}>{"25 litres"}</Text>
           </View>
         </TouchableOpacity>
       )}
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BuyGoodsScreen;
+export default SendCouponScreen;

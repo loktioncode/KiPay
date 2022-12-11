@@ -12,26 +12,21 @@ import { menuItems } from "../components/gridItems";
 import ListView from "../components/ListView";
 
 const HomeScreen = ({ navigation }) => {
-  const menuSelector = (arg: string) => {
-    switch (arg) {
+  const menuSelector = (menuItem: string) => {
+    switch (menuItem) {
       case "buy":
-        //Statements executed when the
-        //result of expression matches value1
         navigation.navigate("BuyGoodsScreen");
-
       case "deposit":
-      //Statements executed when the
-      //result of expression matches value2
-
+        break;
       case "send_coupon":
-      //Statements executed when the
-      //result of expression matches valueN
-
+        navigation.navigate("SendCouponScreen");
       case "withdraw":
-      //Statements executed when the
-      //result of expression matches valueN
+        break;
+      default:
+        break;
     }
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.head}>
