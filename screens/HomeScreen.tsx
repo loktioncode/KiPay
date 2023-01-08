@@ -43,9 +43,6 @@ const HomeScreen = ({ navigation }) => {
           itemDimension={130}
           data={menuItems}
           style={styles.gridView}
-          // staticDimension={300}
-          // fixed
-          // horizontal
           spacing={10}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -84,14 +81,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     width: 90,
     height: 90,
-    margin: 25,
+    margin: 20,
     borderRadius: 45,
   },
   square: {
     backgroundColor: "#7cb48f",
     width: 60,
     height: 60,
-    margin: 25,
+    margin: 20,
     borderRadius: 30,
   },
   griContainer: {
@@ -136,7 +133,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 5,
     padding: 10,
-    height: 150,
+    height: 120,
     shadowColor: "#D3D3D3",
   },
   itemName: {
@@ -144,7 +141,7 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "600",
     textAlign: "center",
-    paddingTop: 20,
+    paddingTop: 16,
   },
   itemCode: {
     fontWeight: "600",

@@ -8,9 +8,9 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   icon: {
-    paddingTop: 25,
+    paddingTop: 50,
     width: 100,
-    paddingLeft: "40%",
+    paddingLeft: "35%",
   },
 });
 
