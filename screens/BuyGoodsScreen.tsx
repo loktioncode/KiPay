@@ -33,7 +33,7 @@ const BuyGoodsScreen = ({ navigation }) => {
               item: item.name,
               image: item.logoUrl,
               metric: item.metric,
-              action: "buy"
+              action: "buy",
             })
           }
         >
@@ -41,7 +41,7 @@ const BuyGoodsScreen = ({ navigation }) => {
             <Image source={item.logoUrl} style={{ width: 130, height: 70 }} />
 
             <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemCode}>{''}</Text>
+            <Text style={styles.itemCode}>{""}</Text>
           </View>
         </TouchableOpacity>
       )}
@@ -50,6 +50,9 @@ const BuyGoodsScreen = ({ navigation }) => {
       )}
     />
   );
+
+  return <>
+  </>;
 };
 
 const styles = StyleSheet.create({

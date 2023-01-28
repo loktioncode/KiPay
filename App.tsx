@@ -13,6 +13,7 @@ import ActionsScreen from "./screens/ActionsScreen";
 import SendCouponScreen from "./screens/SendCouponScreen";
 import DepositScreen from "./screens/DepositScreen";
 import WithdrawScreen from "./screens/WithdrawScreen";
+import SnyBarCodeScanner from "./screens/SnyBarCodeScanner";
 import { useWindowDimensions } from "react-native";
 import UserProvider from "./context/UserContext";
 import CustomIcon from "./components/Icon";
@@ -138,7 +139,7 @@ export default function App() {
               headerTitleStyle: {
                 color: "#34495e",
               },
-              headerTitle: "coupons ZW",
+              headerTitle: "kiPay",
               title: "Home",
               headerLeft: null,
               headerRight: () => (
@@ -309,6 +310,27 @@ export default function App() {
               title: "Withdraw Funds",
             })}
           />
+
+          <Drawer.Screen
+            name="SnyBarCodeScanner"
+            component={SnyBarCodeScanner}
+            options={({ navigation }) => ({
+              headerShown: true,
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerStyle: {
+                backgroundColor: "#FFFFFF",
+              },
+              headerTitleStyle: {
+                color: "#2c3e50",
+              },
+           
+              headerRight: null,
+              title: "PAY",
+            })}
+          />
+ 
         </Drawer.Navigator>
       </UserProvider>
     </NavigationContainer>

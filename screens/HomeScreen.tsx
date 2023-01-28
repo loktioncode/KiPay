@@ -14,8 +14,8 @@ import ListView from "../components/ListView";
 const HomeScreen = ({ navigation }) => {
   const menuSelector = (menuItem: string) => {
     switch (menuItem) {
-      case "buy":
-        navigation.navigate("BuyGoodsScreen");
+      case "pay":
+        navigation.navigate("SnyBarCodeScanner");
         break;
       case "deposit":
         navigation.navigate("DepositScreen");
@@ -34,9 +34,9 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.head}>
-        <Text style={styles.paragraph}>Welcome Ras! 👋</Text>
+        <Text style={styles.paragraph}>Ki Pay </Text>
         <Text style={styles.balanceText}>TOTAL BALANCE</Text>
-        <Text style={styles.balance}>$ 100.02</Text>
+        <Text style={styles.balance}>$100.02</Text>
       </View>
       <View style={styles.griContainer}>
         <FlatGrid
@@ -59,11 +59,11 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
           )}
         />
-        <View style={styles.row}>
+        {/* <View style={styles.row}>
           <View style={styles.square} />
           <View style={styles.pay} />
           <View style={styles.square} />
-        </View>
+        </View> */}
       </View>
     </View>
   );
@@ -75,7 +75,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
-
   },
   pay: {
     backgroundColor: "#fff",

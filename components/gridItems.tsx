@@ -16,17 +16,17 @@ const styles = StyleSheet.create({
 
 export const menuItems = [
   {
-    name: "BUY GOODS",
+    name: "PAY FOR GOODS",
     code: "#1abc9c",
     icon: (
       <MaterialIcons
-        name="add-shopping-cart"
+        name="payment"
         size={40}
         color="white"
         style={styles.icon}
       />
     ),
-    type: "buy",
+    type: "pay",
   },
   {
     name: "SEND COUPON",

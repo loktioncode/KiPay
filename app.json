@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-mobile",
-    "slug": "react-mobile",
+    "name": "kipay",
+    "slug": "kipay",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,10 +24,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.loktioncode.reactmobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "29843aa9-44ce-4cf9-b2b4-5c070a69257b"
+      }
     }
   }
 }
