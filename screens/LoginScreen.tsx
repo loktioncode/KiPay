@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Image,ScrollView } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 // import piggyLogo from "../assets/piggy.svg";
 import { useForm, Controller } from "react-hook-form";
 import Toast from "react-native-root-toast";
@@ -10,7 +10,8 @@ import Button from "../components/Button";
 import { UserContext } from "../context/UserContext";
 import validation from "../config/validations";
 import { UserContextType, IUser } from "../types/user";
-
+import axios from "axios";
+import { Storage } from "expo-storage";
 
 type FormData = {
   email: string;
@@ -19,8 +20,51 @@ type FormData = {
 
 const LoginScreen = ({ navigation }) => {
   const { user, saveUser } = React.useContext(UserContext) as UserContextType;
-  // const { user , saveUser} = useContext();
+  const [loading, setLoading] = React.useState(false);
 
+  const login = async (username: string, password: string) => {
+    const token = JSON.parse(await Storage.getItem({ key: "userInfo" }));
+    axios
+      .post(
+        `http://example.com/api/auth`,
+        {
+          username,
+          password,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then((res) => {
+        let userInfo = res.data;
+        console.log(userInfo);
+        saveUser(userInfo);
+        Storage.setItem({
+          key: "userInfo",
+          value: JSON.stringify(userInfo),
+        });
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(`login error ${e}`);
+        setLoading(false);
+      });
+  };
+
+  const onLoginPressed = async (data: any) => {
+    if (loading) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await login(data.username, data.password);
+      console.log(response);
+    } catch (e: any) {
+      alert("Oops, Failed to Login");
+    }
+    setLoading(false);
+  };
 
   const { handleSubmit, register, setValue, errors, getValues } =
     useForm<FormData>();
@@ -34,14 +78,14 @@ const LoginScreen = ({ navigation }) => {
     // <Toast visible={this.state.visible}>Thanks for subscribing!</Toast>
     setTimeout(function hideToast() {
       Toast.hide(toast);
-    }, 200);
+    }, 500);
     navigation.navigate("HomeScreen");
   };
 
   let Logo = require("../assets/logo.png");
 
   return (
-    <ScrollView  style={styles.main}>
+    <ScrollView style={styles.main}>
       <View style={styles.logo}>
         <Image source={Logo} style={{ width: 100, height: 100 }} />
       </View>
@@ -69,7 +113,7 @@ const LoginScreen = ({ navigation }) => {
           title="Forgot Password ?"
         />
       </View>
-    </ScrollView >
+    </ScrollView>
   );
 };
 

@@ -1,4 +1,4 @@
-import { StatusBar } from "expo-status-bar";
+
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 const Button = (props: any) => {

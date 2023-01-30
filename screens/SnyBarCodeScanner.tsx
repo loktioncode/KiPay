@@ -11,8 +11,9 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import Constants from "expo-constants";
-import { Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import axios from "axios";
+import { Storage } from "expo-storage";
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -21,10 +22,11 @@ type IProps = {
   onScan: (event: any) => void;
   onClose: () => void;
   children: any;
+  navigation: any;
 };
 
 export default function SnyBarCodeScanner(props: IProps) {
-  const { onScan, onClose, children } = props;
+  const { onScan, onClose, children, navigation } = props;
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [screen, setScreen] = useState<string>("scan");
   const [scanned, setScanned] = useState<boolean>(false);
@@ -63,10 +65,39 @@ export default function SnyBarCodeScanner(props: IProps) {
     outputRange: [0, sizeQrCode?.height],
   });
 
-  const handleBarCodeScanned = ({ type, data }: { type: any; data: any }) => {
+  React.useEffect(() => {
+    try {
+      axios
+        .get("https://kichain-server.onrender.com/getencryptionkey")
+        .then(function (res) {
+          Storage.setItem({
+            key: "pciKey",
+            value: JSON.stringify(res.data),
+          });
+        });
+    } catch (error) {
+      alert(error);
+    }
+  }, []);
+
+  const handleBarCodeScanned = async ({
+    type,
+    data,
+  }: {
+    type: any;
+    data: any;
+  }) => {
     onScan && onScan(data);
-    setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    setScanned(!scanned);
+    try {
+      await axios.get(data).then(function (res) {
+        console.log(">>", data);
+        alert(`PAY $ ${res.data.total_cost} `);
+        navigation.navigate("AddCardScreen", res.data);
+      });
+    } catch (error) {
+      alert(error);
+    }
   };
 
   if (hasPermission === null) {
@@ -126,11 +157,17 @@ export default function SnyBarCodeScanner(props: IProps) {
             borderRadius: 13,
           }}
         >
-          <Ionicons name="ios-close" size={20} color="#fff" />
+          <TouchableOpacity onPress={() => navigation.navigate("HomeScreen")}>
+            <Ionicons name="ios-close" size={20} color="#fff" />
+          </TouchableOpacity>
         </View>
       </TouchableOpacity>
       <View style={styles.bottomAction}>
-        <TouchableOpacity onPress={() => setScreen("scan")}>
+        <TouchableOpacity
+          onPress={() => {
+            setScreen("scan"), setScanned(!scanned);
+          }}
+        >
           <View style={styles.bottomButtonAction}>
             <MaterialCommunityIcons
               name="barcode-scan"
@@ -138,12 +175,6 @@ export default function SnyBarCodeScanner(props: IProps) {
               color="#fff"
             />
             <Text style={styles.bottomTextAction}>SCAN</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => setScreen("data")}>
-          <View style={styles.bottomButtonAction}>
-            <Feather name="package" size={20} color="#fff" />
-            <Text style={styles.bottomTextAction}>Dữ liệu</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -227,12 +258,12 @@ const styles: any = StyleSheet.create({
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
   },
-  bottomButtonAction: { alignItems: "center", width: deviceWidth / 2 },
+  bottomButtonAction: { alignItems: "center", width: deviceWidth },
   bottomTextAction: {
     color: "white",
     fontSize: 13,
     lineHeight: 22,
-    fontFamily: "Roboto_500Medium",
+    // fontFamily: "Roboto_500Medium",
     marginTop: 4,
   },
 

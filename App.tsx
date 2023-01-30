@@ -14,6 +14,8 @@ import SendCouponScreen from "./screens/SendCouponScreen";
 import DepositScreen from "./screens/DepositScreen";
 import WithdrawScreen from "./screens/WithdrawScreen";
 import SnyBarCodeScanner from "./screens/SnyBarCodeScanner";
+import AddCard from "./screens/AddCardScreen";
+
 import { useWindowDimensions } from "react-native";
 import UserProvider from "./context/UserContext";
 import CustomIcon from "./components/Icon";
@@ -135,18 +137,14 @@ export default function App() {
             component={HomeScreen}
             options={({ navigation }) => ({
               headerShown: true,
-
-              headerTitleStyle: {
-                color: "#34495e",
-              },
-              headerTitle: "kiPay",
+              headerTitle: "",
               title: "Home",
               headerLeft: null,
               headerRight: () => (
                 <CustomIcon
                   name={"md-arrow-back"}
                   color={"#2c3e50"}
-                  size={30}
+                  size={35}
                   onPress={() => navigation.navigate("HomeScreen")}
                 />
               ),
@@ -325,12 +323,39 @@ export default function App() {
               headerTitleStyle: {
                 color: "#2c3e50",
               },
-           
+
               headerRight: null,
               title: "PAY",
             })}
           />
- 
+
+          <Drawer.Screen
+            name="AddCardScreen"
+            component={AddCard}
+            options={({ navigation }) => ({
+              headerShown: true,
+              drawerItemStyle: {
+                display: "none",
+              },
+              headerStyle: {
+                backgroundColor: "#FFFFFF",
+              },
+              headerTitleStyle: {
+                color: "#2c3e50",
+              },
+
+              headerRight: null,
+              title: "Add Card",
+              headerLeft: () => (
+                <CustomIcon
+                  name={"md-arrow-back"}
+                  color={"#2c3e50"}
+                  size={30}
+                  onPress={() => navigation.navigate("SnyBarCodeScanner")}
+                />
+              ),
+            })}
+          />
         </Drawer.Navigator>
       </UserProvider>
     </NavigationContainer>

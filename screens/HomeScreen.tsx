@@ -34,9 +34,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.head}>
-        <Text style={styles.paragraph}>Ki Pay </Text>
-        <Text style={styles.balanceText}>TOTAL BALANCE</Text>
-        <Text style={styles.balance}>$100.02</Text>
+        <Text style={styles.balance}>KiPAY</Text>
       </View>
       <View style={styles.griContainer}>
         <FlatGrid
@@ -102,7 +100,7 @@ const styles = StyleSheet.create({
   head: {
     backgroundColor: "#2980b9",
     textAlign: "center",
-    height: "25%",
+    height: "18%",
   },
   paragraph: {
     margin: 20,
@@ -119,7 +117,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
   },
   balance: {
-    paddingTop: 5,
+    paddingTop: 30,
     fontSize: 48,
     fontWeight: "300",
     textAlign: "center",
