@@ -65,6 +65,7 @@ export default function SnyBarCodeScanner(props: IProps) {
     outputRange: [0, sizeQrCode?.height],
   });
 
+
   React.useEffect(() => {
     try {
       axios
