@@ -1,5 +1,5 @@
-# coupon-mobile
-Mobile app for the coupon application
+# KiPAY
+USDC borderless pay
 
 
 yarn start
