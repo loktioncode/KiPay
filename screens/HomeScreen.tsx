@@ -20,8 +20,8 @@ const HomeScreen = ({ navigation }) => {
       case "deposit":
         navigation.navigate("DepositScreen");
         break;
-      case "send_coupon":
-        navigation.navigate("SendCouponScreen");
+      case "add":
+        navigation.navigate("AddCardScreen", { total_cost: 0 });
         break;
       case "withdraw":
         navigation.navigate("WithdrawScreen");

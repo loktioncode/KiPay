@@ -29,17 +29,17 @@ export const menuItems = [
     type: "pay",
   },
   {
-    name: "SEND COUPON",
+    name: "ADD CARDS",
     code: "#2ecc71",
     icon: (
       <Ionicons
-        name="ios-share-outline"
+        name="add"
         size={40}
         color="white"
         style={styles.icon}
       />
     ),
-    type: "send_coupon",
+    type: "add",
   },
   {
     name: "DEPOSIT",

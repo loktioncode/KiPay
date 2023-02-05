@@ -1,13 +1,27 @@
-import React from "react";
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
-import { CreditCardInput } from "react-native-credit-card-input";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import {
+  CreditCardInput,
+  LiteCreditCardInput,
+} from "react-native-credit-card-input";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Form from "../components/Form";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Storage } from "expo-storage";
 import validation from "../config/validations";
+import uuid from "react-native-uuid";
+import * as Network from "expo-network";
+import iso3311a2 from "iso-3166-1-alpha-2";
+import DropDownPicker from "react-native-dropdown-picker";
+import countries from "./countries";
 
 type FormData = {
   name: string;
@@ -16,112 +30,159 @@ type FormData = {
   line1: string;
   line2: string;
   district: string;
-  postalCode: string;
+  postalcode: string;
 };
-
-let data = {
-  billingDetails: {
-    name: 'Satoshi Nakamoto',
-    city: 'Boston',
-    country: 'US',
-    line1: '100 Money Street',
-    line2: 'Suite 1',
-    district: 'MA',
-    postalCode: '01234'
-  },
-  metadata: {
-    email: 'satoshi@circle.com',
-    phoneNumber: '+14155555555',
-    sessionId: 'DE6FA86F60BB47B379307F851E238617',
-    ipAddress: '244.28.239.130'
-  },
-  idempotencyKey: 'ba943ff1-ca16-49b2-ba55-1057e70ca5c7',
-  keyId: 'key1',
-  encryptedData: 'LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgp3Y0JNQTBYV1NGbEZScFZoQVFmL2J2bVVkNG5LZ3dkbExKVTlEdEFEK0p5c0VOTUxuOUlRUWVGWnZJUWEKMGgzQklpRFNRU0RMZmI0NEs2SXZMeTZRbm54bmFLcWx0MjNUSmtPd2hGWFIrdnNSMU5IbnVHN0lUNWJECmZzeVdleXlNK1JLNUVHV0thZ3NmQ2tWamh2NGloY29xUnlTTGtJbWVmRzVaR0tMRkJTTTBsTFNPWFRURQpiMy91eU1zMVJNb3ZiclNvbXkxa3BybzUveWxabWVtV2ZsU1pWQlhNcTc1dGc1YjVSRVIraXM5ckc0cS8KMXl0M0FOYXA3UDhKekFhZVlyTnVNZGhGZFhvK0NFMC9CQnN3L0NIZXdhTDk4SmRVUEV0NjA5WFRHTG9kCjZtamY0YUtMQ01xd0RFMkNVb3dPdE8vMzVIMitnVDZKS3FoMmtjQUQyaXFlb3luNWcralRHaFNyd3NKWgpIdEphQWVZZXpGQUVOaFo3Q01IOGNsdnhZVWNORnJuNXlMRXVGTkwwZkczZy95S3loclhxQ0o3UFo5b3UKMFVxQjkzQURKWDlJZjRBeVQ2bU9MZm9wUytpT2lLall4bG1NLzhlVWc3OGp1OVJ5T1BXelhyTzdLWTNHClFSWm8KPXc1dEYKLS0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo',
-  expMonth: 1,
-  expYear: 2020
-}
-
-
 
 const AddCard = ({ route, navigation }) => {
   const { total_cost } = route.params;
   const [cardData, setCardData] = React.useState();
   const [loading, setLoading] = React.useState(false);
-  const [next, setNext] = React.useState(false);
-  
- 
+  // const countries_object = iso3311a2.getData();
+
+  // const countries = Object.entries(countries_object).map(([value, label]) => ({
+  //   value,
+  //   label,
+  // }));
+
+  const [open, setOpen] = useState(false);
+  const [value, setSelectValue] = useState(null);
+  const [items, setItems] = useState(countries);
+
+  let uId = uuid.v4();
 
   const getKey = async () => {
     const item = JSON.parse(await Storage.getItem({ key: `pciKey` }));
     return item;
   };
 
-  const onChange = (form: any) => setCardData(form);
-
-  const saveCardInfo = async (cardData: any) => {
-    const data = {
-      number: cardData?.values?.number,
-      cvv: cardData?.values?.cvc,
-      pubkey: await getKey(),
-    };
-    // console.log(">>>", data);
-
-    secureCardData(data);
-  };
-
-  const secureCardData = async (data: any) => {
+  const addCard = async (payload: any) => {
     setLoading(!loading);
     try {
       await axios
-        .post("https://kichain-server.onrender.com/card-secure", data)
+        .post("https://kichain-server.onrender.com/add-card", payload)
         .then(function (res) {
           setLoading(!loading);
-          setNext(!next);
-          console.log("secureCard>", res.data);
+          console.log(">>added", res.data);
+        });
+    } catch (error) {
+      console.log(">", error);
+      alert(error);
+    }
+  };
+
+  const secureCardData = async (data: any, billingInfo: FormData) => {
+    setLoading(!loading);
+
+    try {
+      await axios
+        .post("https://kichain-server.onrender.com/card-secure", data)
+        .then(async function (res) {
+          setLoading(!loading);
+          var cardDataPayload = {
+            idempotencyKey: uId,
+            encryptedData: res.data.encryptedMessage,
+            expMonth: 1,
+            expYear: 2025,
+            keyId: "key1",
+            billingDetails: billingInfo,
+            metadata: {
+              email: "satoshi@circle.com",
+              phoneNumber: "+14155555555",
+              sessionId: uId,
+              ipAddress: await Network.getIpAddressAsync(),
+            },
+          };
+
+          addCard(JSON.stringify(cardDataPayload));
         });
     } catch (error) {
       alert(error);
     }
   };
 
-  const { handleSubmit, register, setValue, errors, getValues } =
-    useForm<FormData>();
-
-  const onSubmit = (data: FormData) => {
-    alert("data");
+  const onChange = (form: any) => {
+    setCardData(form);
   };
 
+  const saveCardInfo = async (cardData: any, billingInfo: FormData) => {
+    const data = {
+      number: cardData?.values?.number.split(" ").join(""),
+      cvv: cardData?.values?.cvc,
+      pubkey: await getKey(),
+    };
+    secureCardData(data, billingInfo);
+  };
+
+  const { handleSubmit, register, setValue, errors, control } =
+    useForm<FormData>();
+
+  const onSubmit = (billingInfo: FormData) => {
+    saveCardInfo(cardData, billingInfo);
+  };
+
+  React.useEffect(() => {
+    console.log(">>",value)
+  },[value])
+
+  const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
   // Storage.setItem({
   //   key: "billing",
   //   value: JSON.stringify(userInfo),
   // });
 
   return (
-    <ScrollView style={styles.main}>
-      {!next ? (
+    <KeyboardAvoidingView
+      behavior="position"
+      keyboardVerticalOffset={keyboardVerticalOffset}
+    >
+      <ScrollView style={styles.main}>
         <CreditCardInput onChange={onChange} autoFocus allowScroll />
-      ) : (
         <View style={styles.container}>
           <Form {...{ register, setValue, validation, errors }}>
-            <Input name="phone" label="Phone Number" keyboardType={"numeric"} />
-            <Input name="password" label="Password" secureTextEntry={true} />
+            <Input name="name" label="Name" />
+            <Input name="city" label="City" />
 
-            <Button onPress={handleSubmit(onSubmit)} variant="" title="LOGIN" />
+            <View style={styles.container}></View>
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setSelectValue}
+              setItems={setItems}
+              placeholder="Select Country"
+              searchable={true}
+              dropDownContainerStyle={{
+                marginLeft: 20,
+                padding: 5,
+              }}
+              selectedItemContainerStyle={{
+                backgroundColor: "grey",
+              }}
+              style={{
+                borderColor: "#2c3e50",
+                width: "90%",
+                borderWidth: 2,
+                borderRadius: 5,
+                marginTop: 2,
+                marginBottom: 10,
+                marginLeft: '5%',
+                padding: 15
+              }}
+            />
+
+            <Input name="line1" label="Address" />
+            <Input name="district" label="District" />
+            <Input name="postalcode" label="Postal Code" />
+            <Button
+              onPress={handleSubmit(onSubmit)}
+              variant=""
+              title="SUBMIT"
+            />
           </Form>
         </View>
-      )}
-
-      <View style={styles.button}>
-        {cardData && !next ? (
-          <Button
-            onPress={() => saveCardInfo(cardData)}
-            variant="outlined"
-            title="Continue"
-          />
-        ) : null}
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
