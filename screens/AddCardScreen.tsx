@@ -57,6 +57,8 @@ const AddCard = ({ route, navigation }) => {
 
   const addCard = async (payload: any) => {
     setLoading(!loading);
+    console.log(">data", payload);
+
     try {
       await axios
         .post("https://kichain-server.onrender.com/add-card", payload)
@@ -65,8 +67,8 @@ const AddCard = ({ route, navigation }) => {
           console.log(">>added", res.data);
         });
     } catch (error) {
-      console.log(">", error);
-      alert(error);
+      console.log(">", error.Error);
+      alert(error.Error);
     }
   };
 
@@ -96,7 +98,7 @@ const AddCard = ({ route, navigation }) => {
           addCard(JSON.stringify(cardDataPayload));
         });
     } catch (error) {
-      alert(error);
+      alert(error.Error);
     }
   };
 
@@ -121,7 +123,7 @@ const AddCard = ({ route, navigation }) => {
   };
 
   React.useEffect(() => {
-    console.log(">>",value)
+    setValue("country", value);
   },[value])
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
@@ -153,8 +155,10 @@ const AddCard = ({ route, navigation }) => {
               placeholder="Select Country"
               searchable={true}
               dropDownContainerStyle={{
-                marginLeft: 20,
+                marginLeft: 2,
+                marginRight: '8%',
                 padding: 5,
+                display: "flex"
               }}
               selectedItemContainerStyle={{
                 backgroundColor: "grey",
@@ -173,7 +177,7 @@ const AddCard = ({ route, navigation }) => {
 
             <Input name="line1" label="Address" />
             <Input name="district" label="District" />
-            <Input name="postalcode" label="Postal Code" />
+            <Input name="postalCode" label="Postal Code" />
             <Button
               onPress={handleSubmit(onSubmit)}
               variant=""
