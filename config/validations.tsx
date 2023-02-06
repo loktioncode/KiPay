@@ -1,5 +1,11 @@
 export default {
-  name: { required: { value: true, message: "Name is required" } },
+  name: {
+    required: { value: true, message: "Name is required" },
+    // pattern: {
+    //   value: /^\w{2,}$/,
+    //   message: "Must contain name and surname",
+    // },
+  },
   email: {
     pattern: {
       value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -32,4 +38,9 @@ export default {
   merchant: {
     required: { value: true, message: "merchant code is required" },
   },
+  line1: { required: { value: true, message: "required" } },
+  postalCode: { required: { value: true, message: "required" } },
+  city: { required: { value: true, message: "required" } },
+  district: { required: { value: true, message: "required" } },
+  country: { required: { value: true, message: "required" } },
 };

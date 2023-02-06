@@ -37,6 +37,8 @@ const AddCard = ({ route, navigation }) => {
   const { total_cost } = route.params;
   const [cardData, setCardData] = React.useState();
   const [loading, setLoading] = React.useState(false);
+  const [countryCode, setCountryCode] = React.useState("");
+
   // const countries_object = iso3311a2.getData();
 
   // const countries = Object.entries(countries_object).map(([value, label]) => ({
@@ -50,36 +52,69 @@ const AddCard = ({ route, navigation }) => {
 
   let uId = uuid.v4();
 
+  const { handleSubmit, register, setValue, errors, getValues } =
+    useForm<FormData>();
+
   const getKey = async () => {
     const item = JSON.parse(await Storage.getItem({ key: `pciKey` }));
     return item;
   };
 
-  const addCard = async (payload: any) => {
-    setLoading(!loading);
-    console.log(">data", payload);
+  const getCardStatus = async (cardId: string) => {
+    var data = JSON.stringify({
+      id: cardId,
+    });
 
-    try {
-      await axios
-        .post("https://kichain-server.onrender.com/add-card", payload)
-        .then(function (res) {
-          setLoading(!loading);
-          console.log(">>added", res.data);
+    console.log(">>ID", data);
+
+    var config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "https://kichain-server.onrender.com/get-card",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const addCard = async (payload: any) => {
+    var config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://kichain-server.onrender.com/add-card",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: JSON.stringify(payload),
+    };
+
+    axios(config)
+      .then(function (response) {
+        getCardStatus(response.data.id);
+        Storage.setItem({
+          key: "card",
+          value: response.data.id
         });
-    } catch (error) {
-      console.log(">", error.Error);
-      alert(error.Error);
-    }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const secureCardData = async (data: any, billingInfo: FormData) => {
-    setLoading(!loading);
-
     try {
       await axios
         .post("https://kichain-server.onrender.com/card-secure", data)
         .then(async function (res) {
-          setLoading(!loading);
           var cardDataPayload = {
             idempotencyKey: uId,
             encryptedData: res.data.encryptedMessage,
@@ -95,7 +130,7 @@ const AddCard = ({ route, navigation }) => {
             },
           };
 
-          addCard(JSON.stringify(cardDataPayload));
+          addCard(cardDataPayload);
         });
     } catch (error) {
       alert(error.Error);
@@ -107,30 +142,21 @@ const AddCard = ({ route, navigation }) => {
   };
 
   const saveCardInfo = async (cardData: any, billingInfo: FormData) => {
+    setLoading(!loading);
     const data = {
       number: cardData?.values?.number.split(" ").join(""),
       cvv: cardData?.values?.cvc,
       pubkey: await getKey(),
     };
+    billingInfo.country = countryCode;
     secureCardData(data, billingInfo);
   };
-
-  const { handleSubmit, register, setValue, errors, control } =
-    useForm<FormData>();
 
   const onSubmit = (billingInfo: FormData) => {
     saveCardInfo(cardData, billingInfo);
   };
 
-  React.useEffect(() => {
-    setValue("country", value);
-  },[value])
-
   const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
-  // Storage.setItem({
-  //   key: "billing",
-  //   value: JSON.stringify(userInfo),
-  // });
 
   return (
     <KeyboardAvoidingView
@@ -154,11 +180,12 @@ const AddCard = ({ route, navigation }) => {
               setItems={setItems}
               placeholder="Select Country"
               searchable={true}
+              onChangeValue={(e: any) => setCountryCode(e)}
               dropDownContainerStyle={{
                 marginLeft: 2,
-                marginRight: '8%',
+                marginRight: "8%",
                 padding: 5,
-                display: "flex"
+                display: "flex",
               }}
               selectedItemContainerStyle={{
                 backgroundColor: "grey",
@@ -170,8 +197,8 @@ const AddCard = ({ route, navigation }) => {
                 borderRadius: 5,
                 marginTop: 2,
                 marginBottom: 10,
-                marginLeft: '5%',
-                padding: 15
+                marginLeft: "5%",
+                padding: 15,
               }}
             />
 
