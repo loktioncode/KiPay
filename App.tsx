@@ -9,8 +9,6 @@ import ResetPasswordScreen from "./screens/ResetScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import HomeScreen from "./screens/HomeScreen";
 import BuyGoodsScreen from "./screens/BuyGoodsScreen";
-import ActionsScreen from "./screens/ActionsScreen";
-import SendCouponScreen from "./screens/SendCouponScreen";
 import DepositScreen from "./screens/DepositScreen";
 import WithdrawScreen from "./screens/WithdrawScreen";
 import SnyBarCodeScanner from "./screens/SnyBarCodeScanner";
@@ -201,59 +199,7 @@ export default function App() {
             })}
           />
 
-          <Drawer.Screen
-            name="ActionsScreen"
-            component={ActionsScreen}
-            options={({ navigation }) => ({
-              headerShown: true,
-              drawerItemStyle: {
-                display: "none",
-              },
-              headerStyle: {
-                backgroundColor: "#FFFFFF",
-              },
-              headerTitleStyle: {
-                color: "#FFFFFF",
-              },
-              headerLeft: () => (
-                <CustomIcon
-                  name={"md-arrow-back"}
-                  color={"#2c3e50"}
-                  size={30}
-                  onPress={() => navigation.navigate("BuyGoodsScreen")}
-                />
-              ),
-              headerRight: null,
-              title: "",
-            })}
-          />
 
-          <Drawer.Screen
-            name="SendCouponScreen"
-            component={SendCouponScreen}
-            options={({ navigation }) => ({
-              headerShown: true,
-              drawerItemStyle: {
-                display: "none",
-              },
-              headerStyle: {
-                backgroundColor: "#FFFFFF",
-              },
-              headerTitleStyle: {
-                color: "#FFFFFF",
-              },
-              headerLeft: () => (
-                <CustomIcon
-                  name={"md-arrow-back"}
-                  color={"#2c3e50"}
-                  size={30}
-                  onPress={() => navigation.navigate("HomeScreen")}
-                />
-              ),
-              headerRight: null,
-              title: "Send Coupons",
-            })}
-          />
 
           <Drawer.Screen
             name="DepositScreen"
@@ -351,7 +297,7 @@ export default function App() {
                   name={"md-arrow-back"}
                   color={"#2c3e50"}
                   size={30}
-                  onPress={() => navigation.navigate("SnyBarCodeScanner")}
+                  onPress={() => navigation.navigate("HomeScreen")}
                 />
               ),
             })}
