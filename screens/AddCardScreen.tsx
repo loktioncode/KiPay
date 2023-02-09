@@ -36,7 +36,7 @@ type FormData = {
 };
 
 const AddCard = ({ route, navigation }) => {
-  const { total_cost, paid } = route.params;
+  const { total_cost, paid, id } = route.params;
   const [cardData, setCardData] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [countryCode, setCountryCode] = React.useState("");
@@ -81,6 +81,9 @@ const AddCard = ({ route, navigation }) => {
       .then(function (response: { data: any }) {
         setLoading(!loading);
         console.log("PAID", JSON.stringify(response.data));
+        let res = response.data;
+        res.invoice = id;
+        navigation.navigate("PayScreen", response.data);
       })
       .catch(function (error: any) {
         alert("FAILED TO PAY");
@@ -99,6 +102,8 @@ const AddCard = ({ route, navigation }) => {
       },
       data: JSON.stringify(payload),
     };
+
+    console.log(payload);
 
     axios(config)
       .then(function (response) {
@@ -139,6 +144,7 @@ const AddCard = ({ route, navigation }) => {
   };
 
   const secureCardData = async (data: any, billingInfo: FormData) => {
+    setLoading(!loading);
     try {
       await axios
         .post("https://kichain-server.onrender.com/card-secure", data)
@@ -188,14 +194,6 @@ const AddCard = ({ route, navigation }) => {
   };
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
-
-  // if (loading) {
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text>Loading</Text>
-  //     </View>
-  //   );
-  // }
 
   // if (getCard()) {
   //   return (
@@ -290,6 +288,7 @@ const AddCard = ({ route, navigation }) => {
               onPress={handleSubmit(onSubmit)}
               variant=""
               title="SUBMIT"
+              load={loading}
             />
           </Form>
         </View>

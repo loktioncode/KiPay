@@ -12,28 +12,21 @@ import {
 import Button from "../components/Button";
 import { customStyles } from "../config/stepperStyles";
 import StepIndicator from "react-native-step-indicator";
-import DepositForm from "../components/deposit_flow/depositForm";
-import DepositOrder from "../components/deposit_flow/depositOrder";
-
-type FormData = {
-  recipient: number;
-  amount: number;
-};
+import PaymentStatus from "../components/pay_flow/paymentStatus";
 
 const PayScreen = ({ route, navigation }) => {
-  const labels = ["Payment", "Payment Status", "Order Status"];
+  const { id, status, amount, invoice } = route.params;
+  const labels = ["Payment Status", "Order Status"];
   const [currentPosition, setCurrentPosition] = React.useState(0);
   let Logo = require("../assets/logozuva.png");
 
-  const [modalVisible, setModalVisible] = React.useState(false);
-
   React.useEffect(() => {
     setCurrentPosition(0);
-  },[]);
+  }, []);
 
   const depositComplete = (
     <View style={styles.infoContainer}>
-      <Text style={styles.title}>Deposit Complete!</Text>
+      <Text style={styles.title}>Deposit Complete</Text>
 
       <Text style={styles.paragraph}>2. Confirm order</Text>
       <Text style={styles.paragraph}>
@@ -49,39 +42,18 @@ const PayScreen = ({ route, navigation }) => {
   );
 
   const stepperContent = [
-    <DepositForm setCurrentPosition={() => setCurrentPosition(1)} />,
-    <DepositOrder setCurrentPosition={() => setCurrentPosition(0)} />,
+    <PaymentStatus
+      setCurrentPosition={() => setCurrentPosition(0)}
+      amount={amount.amount}
+      status={status}
+      id={id}
+      invoice={invoice}
+    />,
     depositComplete,
   ];
 
   return (
     <ScrollView style={styles.main}>
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View>
-              <Text style={styles.modalText}>Confirm</Text>
-            </View>
-            <View>
-              <Text style={styles.modalParagraph}>Amount to be Sent!</Text>
-              <Text style={styles.modalParagraph}>$ 10.50</Text>
-            </View>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
       <View style={{ paddingTop: 10 }}>
         <StepIndicator
           customStyles={customStyles}
@@ -92,12 +64,10 @@ const PayScreen = ({ route, navigation }) => {
       </View>
 
       {stepperContent[currentPosition]}
-      
+
       <View style={styles.container}>
         <Image source={Logo} style={{ width: 200, height: 80 }} />
-        <Text style={styles.paragraph}>
-          1. Enter amount 
-        </Text>
+        <Text style={styles.paragraph}>1. Enter amount</Text>
         <Text style={styles.paragraph}>2. Confirm Order</Text>
         <Text style={styles.paragraph}>
           3. Use order number at TillPoint to deposit
