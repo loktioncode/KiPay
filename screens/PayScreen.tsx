@@ -20,8 +20,8 @@ type FormData = {
   amount: number;
 };
 
-const DepositScreen = ({ route, navigation }) => {
-  const labels = ["Create Order", "Order Details", "Order Status"];
+const PayScreen = ({ route, navigation }) => {
+  const labels = ["Payment", "Payment Status", "Order Status"];
   const [currentPosition, setCurrentPosition] = React.useState(0);
   let Logo = require("../assets/logozuva.png");
 
@@ -96,9 +96,9 @@ const DepositScreen = ({ route, navigation }) => {
       <View style={styles.container}>
         <Image source={Logo} style={{ width: 200, height: 80 }} />
         <Text style={styles.paragraph}>
-          1. Enter amount you want to deposit!
+          1. Enter amount 
         </Text>
-        <Text style={styles.paragraph}>2. Confirm order</Text>
+        <Text style={styles.paragraph}>2. Confirm Order</Text>
         <Text style={styles.paragraph}>
           3. Use order number at TillPoint to deposit
         </Text>
@@ -215,4 +215,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DepositScreen;
+export default PayScreen;

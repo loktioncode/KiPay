@@ -9,7 +9,7 @@ import ResetPasswordScreen from "./screens/ResetScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import HomeScreen from "./screens/HomeScreen";
 import BuyGoodsScreen from "./screens/BuyGoodsScreen";
-import DepositScreen from "./screens/DepositScreen";
+import PayScreen from "./screens/PayScreen";
 import WithdrawScreen from "./screens/WithdrawScreen";
 import SnyBarCodeScanner from "./screens/SnyBarCodeScanner";
 import AddCard from "./screens/AddCardScreen";
@@ -202,8 +202,8 @@ export default function App() {
 
 
           <Drawer.Screen
-            name="DepositScreen"
-            component={DepositScreen}
+            name="PayScreen"
+            component={PayScreen}
             options={({ navigation }) => ({
               headerShown: true,
               drawerItemStyle: {
@@ -224,7 +224,7 @@ export default function App() {
                 />
               ),
               headerRight: null,
-              title: "Deposit Funds",
+              title: "PAY",
             })}
           />
 

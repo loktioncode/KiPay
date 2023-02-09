@@ -36,7 +36,7 @@ type FormData = {
 };
 
 const AddCard = ({ route, navigation }) => {
-  const { total_cost } = route.params;
+  const { total_cost, paid } = route.params;
   const [cardData, setCardData] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [countryCode, setCountryCode] = React.useState("");
@@ -48,7 +48,6 @@ const AddCard = ({ route, navigation }) => {
   const [open, setOpen] = useState(false);
   const [value, setSelectValue] = useState(null);
   const [items, setItems] = useState(countries);
-  const [cardID, setCardId] = useState("");
 
   let uId = uuid.v4();
 
@@ -67,29 +66,7 @@ const AddCard = ({ route, navigation }) => {
     return item;
   };
 
-  const pay = async (amount: any) => {
-    var data = JSON.stringify({
-      idempotencyKey: uId,
-      amount: {
-        amount: amount,
-        currency: "USD",
-      },
-      verification: "cvv",
-      source: {
-        // id: getCard(),
-        id: cardID,
-        type: "card",
-      },
-      description: "",
-      channel: "",
-      metadata: {
-        email: "satoshi@circle.com",
-        phoneNumber: "+14155555555",
-        sessionId: uId,
-        ipAddress: await Network.getIpAddressAsync(),
-      },
-    });
-
+  const pay = async (data: any) => {
     var config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -112,6 +89,7 @@ const AddCard = ({ route, navigation }) => {
   };
 
   const addCard = async (payload: any) => {
+    let ip = await Network.getIpAddressAsync();
     var config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -128,7 +106,31 @@ const AddCard = ({ route, navigation }) => {
           key: "card",
           value: response.data.id,
         });
-        setCardId(response.data.id);
+        let data = JSON.stringify({
+          idempotencyKey: uId,
+          amount: {
+            amount: total_cost,
+            currency: "USD",
+          },
+          verification: "cvv",
+          source: {
+            id: response.data.id,
+            type: "card",
+          },
+          description: "",
+          channel: "",
+          metadata: {
+            email: "satoshi@circle.com",
+            phoneNumber: "+14155555555",
+            sessionId: uId,
+            ipAddress: ip,
+          },
+        });
+        if (paid) {
+          alert("INVOICE PAID");
+        } else {
+          pay(data);
+        }
       })
       .catch(function (error) {
         alert("FAILED TO ADD CARD");
@@ -178,29 +180,22 @@ const AddCard = ({ route, navigation }) => {
   };
 
   React.useEffect(() => {
-    console.log(">invoice", route.params);
-    console.log(">>CARD ID", getCard());
-    if (cardID && route.params.status !== "paid") {
-      pay(total_cost);
-    } else {
-      alert("INVOICE ALREADY PAID");
-    }
-  }, [cardID]);
+    setLoading(false);
+  }, []);
 
   const onSubmit = (billingInfo: FormData) => {
-    setLoading(!loading);
     saveCardInfo(cardData, billingInfo);
   };
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading</Text>
-      </View>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <View style={styles.container}>
+  //       <Text>Loading</Text>
+  //     </View>
+  //   );
+  // }
 
   // if (getCard()) {
   //   return (
