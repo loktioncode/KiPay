@@ -24,6 +24,7 @@ import uuid from "react-native-uuid";
 import * as Network from "expo-network";
 import DropDownPicker from "react-native-dropdown-picker";
 import countries from "./countries";
+import CreditCard from "../components/creditcard";
 
 type FormData = {
   name: string;
@@ -57,12 +58,12 @@ const AddCard = ({ route, navigation }) => {
     useForm<FormData>();
 
   const getKey = async () => {
-    const item = JSON.parse(await Storage.getItem({ key: `pciKey` }));
+    const item = await Storage.getItem({ key: `pciKey` });
     return item;
   };
 
   const getCard = async () => {
-    const item = JSON.parse(await Storage.getItem({ key: "card" }));
+    const item = await Storage.getItem({ key: "card" });
     return item;
   };
 
@@ -81,8 +82,6 @@ const AddCard = ({ route, navigation }) => {
       .then(function (response: { data: any }) {
         setLoading(!loading);
         console.log("PAID", JSON.stringify(response.data));
-        let res = response.data;
-        res.invoice = id;
         navigation.navigate("PayScreen", response.data);
       })
       .catch(function (error: any) {
@@ -197,9 +196,12 @@ const AddCard = ({ route, navigation }) => {
 
   // if (getCard()) {
   //   return (
-  //     <View style={styles.container}>
-  //       <Text>Card Loaded</Text>
-  //     </View>
+  //     <CreditCard   name=""
+  //     date=""
+  //     suffix=""
+  //     style={styles.centeredView}
+  //     textColor = "white"
+  //     bgColor = "#0047cc"/>
   //   );
   // }
 
@@ -289,6 +291,7 @@ const AddCard = ({ route, navigation }) => {
               variant=""
               title="SUBMIT"
               load={loading}
+             
             />
           </Form>
         </View>

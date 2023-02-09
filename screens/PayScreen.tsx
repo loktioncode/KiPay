@@ -22,21 +22,17 @@ const PayScreen = ({ route, navigation }) => {
 
   React.useEffect(() => {
     setCurrentPosition(0);
+    console.log(invoice)
   }, []);
 
   const depositComplete = (
     <View style={styles.infoContainer}>
-      <Text style={styles.title}>Deposit Complete</Text>
-
-      <Text style={styles.paragraph}>2. Confirm order</Text>
-      <Text style={styles.paragraph}>
-        3. Use order number at TillPoint to deposit
-      </Text>
+      <Text style={styles.title}>Payment Complete</Text>
 
       <Button
         onPress={() => setCurrentPosition(0)}
         variant=""
-        title={"Complete"}
+        title={"Next"}
       />
     </View>
   );

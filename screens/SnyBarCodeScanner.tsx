@@ -65,7 +65,6 @@ export default function SnyBarCodeScanner(props: IProps) {
     outputRange: [0, sizeQrCode?.height],
   });
 
-
   React.useEffect(() => {
     try {
       axios
@@ -92,7 +91,7 @@ export default function SnyBarCodeScanner(props: IProps) {
     setScanned(!scanned);
     try {
       await axios.get(data).then(function (res) {
-        console.log(">>", data);
+        console.log(">>", res.data);
         alert(`PAY $ ${res.data.total_cost} `);
         navigation.navigate("AddCardScreen", res.data);
       });

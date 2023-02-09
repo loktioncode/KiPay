@@ -218,9 +218,9 @@ export default function App() {
               headerLeft: () => (
                 <CustomIcon
                   name={"md-arrow-back"}
-                  color={"#2c3e50"}
+                  color={"#fff"}
                   size={30}
-                  onPress={() => navigation.navigate("HomeScreen")}
+                  onPress={()=>console.log(">")}
                 />
               ),
               headerRight: null,

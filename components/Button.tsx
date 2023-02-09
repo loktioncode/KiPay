@@ -9,6 +9,7 @@ const Button = (props: any) => {
   const { onPress, title, variant, load } = props;
   return (
     <TouchableOpacity
+      disabled={props.load}
       onPress={onPress}
       style={
         variant === "outlined"
