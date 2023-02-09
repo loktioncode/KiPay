@@ -165,8 +165,8 @@ const AddCard = ({ route, navigation }) => {
           addCard(cardDataPayload);
         });
     } catch (error) {
+      setLoading(false);
       alert("FAILED TO PROCESS CARD INFO");
-      setLoading(!loading);
     }
   };
 
