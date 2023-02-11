@@ -97,6 +97,8 @@ const AddCard = ({ route, navigation }) => {
       data: JSON.stringify(payload),
     };
 
+    console.log(payload);
+
     axios(config)
       .then(function (response) {
         Storage.setItem({
