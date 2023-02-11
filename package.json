@@ -28,7 +28,7 @@
     "firebase": "^9.9.0",
     "iso-3166-1-alpha-2": "^1.0.1",
     "link": "^1.5.1",
-    "lottie-react-native": "5.0.1",
+    "lottie-react-native": "^5.1.5",
     "openpgp": "^5.5.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -45,6 +45,7 @@
     "react-native-step-indicator": "^1.0.3",
     "react-native-super-grid": "^4.6.1",
     "react-native-uuid": "^2.0.1",
+    "react-native-web": "0.17.7",
     "react-navigator": "^0.0.0-0",
     "rn-card-scanner": "^1.1.1",
     "rn-credit-card": "^1.0.4"

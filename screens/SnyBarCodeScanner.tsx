@@ -65,22 +65,6 @@ export default function SnyBarCodeScanner(props: IProps) {
     outputRange: [0, sizeQrCode?.height],
   });
 
-
-  React.useEffect(() => {
-    try {
-      axios
-        .get("https://kichain-server.onrender.com/getencryptionkey")
-        .then(function (res) {
-          Storage.setItem({
-            key: "pciKey",
-            value: JSON.stringify(res.data),
-          });
-        });
-    } catch (error) {
-      alert(error);
-    }
-  }, []);
-
   const handleBarCodeScanned = async ({
     type,
     data,
@@ -92,7 +76,6 @@ export default function SnyBarCodeScanner(props: IProps) {
     setScanned(!scanned);
     try {
       await axios.get(data).then(function (res) {
-        console.log(">>", data);
         alert(`PAY $ ${res.data.total_cost} `);
         navigation.navigate("AddCardScreen", res.data);
       });

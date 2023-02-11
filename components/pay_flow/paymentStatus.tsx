@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image } from "react-native";
 
 import Button from "../Button";
 
-const DepositOrder = (props: any) => {
+const PaymentStatus = (props: any) => {
   let depositIcon = require("../../assets/deposit.png");
 
   return (
@@ -13,11 +13,8 @@ const DepositOrder = (props: any) => {
       </View>
 
       <View style={styles.infoContainer}>
-        <Text style={styles.paragraph}>Order Number:</Text>
-        <Text style={styles.title}>#22435ZW</Text>
-
-        <Text style={styles.paragraph}>Deposit Amount:</Text>
-        <Text style={styles.title}>$10.50</Text>
+        <Text style={styles.paragraph}>Amount Paid:</Text>
+        <Text style={styles.title}>USDC {props.amount}</Text>
       </View>
     </View>
   );
@@ -61,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DepositOrder;
+export default PaymentStatus;

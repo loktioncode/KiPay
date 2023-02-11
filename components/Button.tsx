@@ -1,19 +1,34 @@
-
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 
 const Button = (props: any) => {
-  const { onPress, title, variant } = props;
+  const { onPress, title, variant, load } = props;
   return (
     <TouchableOpacity
+      disabled={props.load}
       onPress={onPress}
-      style={variant === "outlined" ? styles.outlinedBtn : variant === "text" ? styles.textButton : styles.button}
+      style={
+        variant === "outlined"
+          ? styles.outlinedBtn
+          : variant === "text"
+          ? styles.textButton
+          : styles.button
+      }
     >
       <Text
         style={
-          variant === "outlined" ? styles.outlinedButtonText : variant === "text" ? styles.textButtonText :  styles.btnTxt
+          variant === "outlined"
+            ? styles.outlinedButtonText
+            : variant === "text"
+            ? styles.textButtonText
+            : styles.btnTxt
         }
       >
-        {title}
+        {!load ? title : <ActivityIndicator size="small" color="#fff" />}
       </Text>
     </TouchableOpacity>
   );
@@ -65,14 +80,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 38,
     elevation: 3,
     backgroundColor: "#fff",
-    marginTop: 10
+    marginTop: 10,
   },
   textButtonText: {
     fontSize: 16,
     lineHeight: 20,
     fontWeight: "normal",
     letterSpacing: 0.25,
-    color: "#2c3e50"
+    color: "#2c3e50",
   },
 });
 

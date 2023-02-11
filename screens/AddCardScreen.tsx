@@ -24,6 +24,7 @@ import uuid from "react-native-uuid";
 import * as Network from "expo-network";
 import DropDownPicker from "react-native-dropdown-picker";
 import countries from "./countries";
+import CreditCard from "../components/creditcard";
 
 type FormData = {
   name: string;
@@ -36,10 +37,11 @@ type FormData = {
 };
 
 const AddCard = ({ route, navigation }) => {
-  const { total_cost } = route.params;
+  const { total_cost, paid, id } = route.params;
   const [cardData, setCardData] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [countryCode, setCountryCode] = React.useState("");
+  const [getKey, setPCIKey] = React.useState(null);
 
   const [modalVisible, setModalVisible] = React.useState(false);
   const [hide, setHide] = React.useState(false);
@@ -48,48 +50,19 @@ const AddCard = ({ route, navigation }) => {
   const [open, setOpen] = useState(false);
   const [value, setSelectValue] = useState(null);
   const [items, setItems] = useState(countries);
-  const [cardID, setCardId] = useState("");
 
   let uId = uuid.v4();
-
   const getTotal = (qty: any, price: number) => setTotal(price * parseInt(qty));
 
-  const { handleSubmit, register, setValue, errors, getValues } =
+  const { handleSubmit, register, setValue, errors, getValues, reset } =
     useForm<FormData>();
 
-  const getKey = async () => {
-    const item = JSON.parse(await Storage.getItem({ key: `pciKey` }));
-    return item;
-  };
-
   const getCard = async () => {
-    const item = JSON.parse(await Storage.getItem({ key: "card" }));
+    const item = await Storage.getItem({ key: "card" });
     return item;
   };
 
-  const pay = async (amount: any) => {
-    var data = JSON.stringify({
-      idempotencyKey: uId,
-      amount: {
-        amount: amount,
-        currency: "USD",
-      },
-      verification: "cvv",
-      source: {
-        // id: getCard(),
-        id: cardID,
-        type: "card",
-      },
-      description: "",
-      channel: "",
-      metadata: {
-        email: "satoshi@circle.com",
-        phoneNumber: "+14155555555",
-        sessionId: uId,
-        ipAddress: await Network.getIpAddressAsync(),
-      },
-    });
-
+  const pay = async (data: any) => {
     var config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -104,6 +77,7 @@ const AddCard = ({ route, navigation }) => {
       .then(function (response: { data: any }) {
         setLoading(!loading);
         console.log("PAID", JSON.stringify(response.data));
+        navigation.navigate("PayScreen", response.data);
       })
       .catch(function (error: any) {
         alert("FAILED TO PAY");
@@ -112,6 +86,7 @@ const AddCard = ({ route, navigation }) => {
   };
 
   const addCard = async (payload: any) => {
+    let ip = await Network.getIpAddressAsync();
     var config = {
       method: "post",
       maxBodyLength: Infinity,
@@ -128,7 +103,32 @@ const AddCard = ({ route, navigation }) => {
           key: "card",
           value: response.data.id,
         });
-        setCardId(response.data.id);
+        let data = JSON.stringify({
+          idempotencyKey: uId,
+          amount: {
+            amount: total_cost,
+            currency: "USD",
+          },
+          verification: "cvv",
+          source: {
+            id: response.data.id,
+            type: "card",
+          },
+          description: "",
+          channel: "",
+          metadata: {
+            email: "satoshi@circle.com",
+            phoneNumber: "+14155555555",
+            sessionId: uId,
+            ipAddress: ip,
+          },
+        });
+        reset();
+        if (paid) {
+          alert("INVOICE PAID");
+        } else {
+          pay(data);
+        }
       })
       .catch(function (error) {
         alert("FAILED TO ADD CARD");
@@ -137,10 +137,13 @@ const AddCard = ({ route, navigation }) => {
   };
 
   const secureCardData = async (data: any, billingInfo: FormData) => {
+    let ip = await Network.getIpAddressAsync();
+
     try {
+      setLoading(!loading);
       await axios
         .post("https://kichain-server.onrender.com/card-secure", data)
-        .then(async function (res) {
+        .then(function (res) {
           var cardDataPayload = {
             idempotencyKey: uId,
             encryptedData: res.data.encryptedMessage,
@@ -152,14 +155,16 @@ const AddCard = ({ route, navigation }) => {
               email: "satoshi@circle.com",
               phoneNumber: "+14155555555",
               sessionId: uId,
-              ipAddress: await Network.getIpAddressAsync(),
+              ipAddress: ip,
             },
           };
+          console.log(">LOAD>", cardDataPayload);
+          setLoading(!loading);
           addCard(cardDataPayload);
         });
     } catch (error) {
-      alert("FAILED TO PROCESS CARD INFO");
       setLoading(!loading);
+      alert("FAILED TO PROCESS CARD INFO");
     }
   };
 
@@ -167,45 +172,47 @@ const AddCard = ({ route, navigation }) => {
     setCardData(form);
   };
 
-  const saveCardInfo = async (cardData: any, billingInfo: FormData) => {
+  const saveCardInfo = (cardData: any, billingInfo: FormData) => {
     const data = {
       number: cardData?.values?.number.split(" ").join(""),
       cvv: cardData?.values?.cvc,
-      pubkey: await getKey(),
+      pubkey: getKey,
     };
     billingInfo.country = countryCode;
+    // billingInfo.country = "US";
+    console.log(billingInfo);
     secureCardData(data, billingInfo);
   };
 
   React.useEffect(() => {
-    console.log(">invoice", route.params);
-    console.log(">>CARD ID", getCard());
-    if (cardID && route.params.status !== "paid") {
-      pay(total_cost);
-    } else {
-      alert("INVOICE ALREADY PAID");
+    try {
+      axios
+        .get("https://kichain-server.onrender.com/getencryptionkey")
+        .then(function (res) {
+          setPCIKey(res.data);
+        });
+    } catch (error) {
+      alert(error);
     }
-  }, [cardID]);
+  }, [loading]);
 
   const onSubmit = (billingInfo: FormData) => {
-    setLoading(!loading);
     saveCardInfo(cardData, billingInfo);
   };
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading</Text>
-      </View>
-    );
-  }
-
   // if (getCard()) {
   //   return (
-  //     <View style={styles.container}>
-  //       <Text>Card Loaded</Text>
+  //     <View style={styles.centeredView}>
+  //       <CreditCard
+  //         name=""
+  //         date=""
+  //         suffix=""
+  //         style={styles.centeredView}
+  //         textColor="white"
+  //         bgColor="#0047cc"
+  //       />
   //     </View>
   //   );
   // }
@@ -250,8 +257,10 @@ const AddCard = ({ route, navigation }) => {
         </View>
       </Modal>
       <ScrollView style={styles.main}>
-        <CreditCardInput onChange={onChange} autoFocus allowScroll />
+      <CreditCardInput onChange={onChange} autoFocus allowScroll />
+
         <View style={styles.container}>
+         
           <Form {...{ register, setValue, validation, errors }}>
             <Input name="name" label="Name" />
             <Input name="city" label="City" />
@@ -295,6 +304,7 @@ const AddCard = ({ route, navigation }) => {
               onPress={handleSubmit(onSubmit)}
               variant=""
               title="SUBMIT"
+              load={loading}
             />
           </Form>
         </View>
