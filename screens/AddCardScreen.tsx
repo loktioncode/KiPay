@@ -37,7 +37,7 @@ type FormData = {
 };
 
 const AddCard = ({ route, navigation }) => {
-  const { total_cost, paid, id } = route.params;
+  const { total_cost, paid, _id } = route.params;
   const [cardData, setCardData] = React.useState();
   const [loading, setLoading] = React.useState(false);
   const [countryCode, setCountryCode] = React.useState("");
@@ -76,8 +76,10 @@ const AddCard = ({ route, navigation }) => {
     axios(config)
       .then(function (response: { data: any }) {
         setLoading(!loading);
-        console.log("PAID", JSON.stringify(response.data));
-        navigation.navigate("PayScreen", response.data);
+        let x = response.data;
+        x.invoiceId = _id;
+        console.log("PAID", x);
+        navigation.navigate("PayScreen", x);
       })
       .catch(function (error: any) {
         alert("FAILED TO PAY");
@@ -96,8 +98,6 @@ const AddCard = ({ route, navigation }) => {
       },
       data: JSON.stringify(payload),
     };
-
-    console.log(payload);
 
     axios(config)
       .then(function (response) {
@@ -160,7 +160,7 @@ const AddCard = ({ route, navigation }) => {
               ipAddress: ip,
             },
           };
-          console.log(">LOAD>", cardDataPayload);
+          // console.log(">LOAD>", cardDataPayload);
           setLoading(!loading);
           addCard(cardDataPayload);
         });
@@ -187,6 +187,7 @@ const AddCard = ({ route, navigation }) => {
   };
 
   React.useEffect(() => {
+    setLoading(false);
     try {
       axios
         .get("https://kichain-server.onrender.com/getencryptionkey")
@@ -196,7 +197,7 @@ const AddCard = ({ route, navigation }) => {
     } catch (error) {
       alert(error);
     }
-  }, [loading]);
+  }, []);
 
   const onSubmit = (billingInfo: FormData) => {
     saveCardInfo(cardData, billingInfo);
@@ -224,7 +225,7 @@ const AddCard = ({ route, navigation }) => {
       behavior="position"
       keyboardVerticalOffset={keyboardVerticalOffset}
     >
-      <Modal
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
@@ -257,12 +258,11 @@ const AddCard = ({ route, navigation }) => {
             </Pressable>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
       <ScrollView style={styles.main}>
-      <CreditCardInput onChange={onChange} autoFocus allowScroll />
+        <CreditCardInput onChange={onChange} autoFocus allowScroll />
 
         <View style={styles.container}>
-         
           <Form {...{ register, setValue, validation, errors }}>
             <Input name="name" label="Name" />
             <Input name="city" label="City" />

@@ -1,39 +1,38 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  Modal,
-  Pressable,
-} from "react-native";
-
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import axios from "axios";
 import Button from "../components/Button";
 import { customStyles } from "../config/stepperStyles";
 import StepIndicator from "react-native-step-indicator";
 import PaymentStatus from "../components/pay_flow/paymentStatus";
 
 const PayScreen = ({ route, navigation }) => {
-  const { id, status, amount, invoice } = route.params;
+  const { invoiceId, id, amount, status } = route.params;
   const labels = ["Payment Status", "Order Status"];
   const [currentPosition, setCurrentPosition] = React.useState(0);
+  const [paymentStatus, setStatus] = React.useState(null);
+
   let Logo = require("../assets/logozuva.png");
 
   React.useEffect(() => {
     setCurrentPosition(0);
-    console.log(">>invoice",invoice)
+    console.log(">>invoice", invoiceId);
+    // try {
+    //   axios
+    //     .get("https://kichain-server.onrender.com/getencryptionkey")
+    //     .then(function (res) {
+    //       setStatus(res.data);
+    //     });
+    // } catch (error) {
+    //   alert(error);
+    // }
   }, []);
 
   const depositComplete = (
     <View style={styles.infoContainer}>
       <Text style={styles.title}>Payment Complete</Text>
 
-      <Button
-        onPress={() => setCurrentPosition(0)}
-        variant=""
-        title={"Next"}
-      />
+      <Button onPress={() => setCurrentPosition(0)} variant="" title={"Next"} />
     </View>
   );
 
@@ -41,9 +40,8 @@ const PayScreen = ({ route, navigation }) => {
     <PaymentStatus
       setCurrentPosition={() => setCurrentPosition(0)}
       amount={amount.amount}
+      invoice={invoiceId}
       status={status}
-      id={id}
-      invoice={invoice}
     />,
     depositComplete,
   ];

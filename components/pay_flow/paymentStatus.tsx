@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, ActivityIndicator } from "react-native";
 
 import Button from "../Button";
 
@@ -15,7 +15,11 @@ const PaymentStatus = (props: any) => {
       <View style={styles.infoContainer}>
         <Text style={styles.paragraph}>Amount Paid:</Text>
         <Text style={styles.title}>USDC {props.amount}</Text>
+        <Text style={styles.title}>{props.invoice}</Text>
       </View>
+      {props.status === "pending" ? (
+        <ActivityIndicator size="small" color="#fff" />
+      ) : null}
     </View>
   );
 };
