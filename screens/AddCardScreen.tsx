@@ -111,7 +111,7 @@ const AddCard = ({ route, navigation }) => {
             amount: total_cost,
             currency: "USD",
           },
-          verification: "cvv",
+          verification: 'none',
           source: {
             id: response.data.id,
             type: "card",

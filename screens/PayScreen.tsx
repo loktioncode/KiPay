@@ -14,18 +14,31 @@ const PayScreen = ({ route, navigation }) => {
 
   let Logo = require("../assets/logozuva.png");
 
+  var config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "https://kichain-server.onrender.com/get-payment",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify({
+      id: id,
+    }),
+  };
+
   React.useEffect(() => {
     setCurrentPosition(0);
     console.log(">>invoice", invoiceId);
-    // try {
-    //   axios
-    //     .get("https://kichain-server.onrender.com/getencryptionkey")
-    //     .then(function (res) {
-    //       setStatus(res.data);
-    //     });
-    // } catch (error) {
-    //   alert(error);
-    // }
+    console.log(">>txnID", id);
+    console.log(">>txnStatus", status);
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }, []);
 
   const depositComplete = (
