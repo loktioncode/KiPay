@@ -1,79 +1,42 @@
 import React from "react";
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+} from "react-native";
 import axios from "axios";
+import { Feather } from "@expo/vector-icons";
 import Button from "../components/Button";
 import { customStyles } from "../config/stepperStyles";
 import StepIndicator from "react-native-step-indicator";
-import PaymentStatus from "../components/pay_flow/paymentStatus";
 
 const PayScreen = ({ route, navigation }) => {
   const { invoiceId, id, amount, status } = route.params;
-  const labels = ["Payment Status", "Order Status"];
-  const [currentPosition, setCurrentPosition] = React.useState(0);
-  const [paymentStatus, setStatus] = React.useState(null);
 
   let Logo = require("../assets/logozuva.png");
 
-  var config = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: "https://kichain-server.onrender.com/get-payment",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: JSON.stringify({
-      id: id,
-    }),
-  };
-
   React.useEffect(() => {
-    setCurrentPosition(0);
-    console.log(">>invoice", invoiceId);
-    console.log(">>txnID", id);
-    console.log(">>txnStatus", status);
-
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    console.log(">>", status);
   }, []);
-
-  const depositComplete = (
-    <View style={styles.infoContainer}>
-      <Text style={styles.title}>Payment Complete</Text>
-
-      <Button onPress={() => setCurrentPosition(0)} variant="" title={"Next"} />
-    </View>
-  );
-
-  const stepperContent = [
-    <PaymentStatus
-      setCurrentPosition={() => setCurrentPosition(0)}
-      amount={amount.amount}
-      invoice={invoiceId}
-      status={status}
-    />,
-    depositComplete,
-  ];
 
   return (
     <ScrollView style={styles.main}>
-      <View style={{ paddingTop: 10 }}>
-        <StepIndicator
-          customStyles={customStyles}
-          currentPosition={currentPosition}
-          labels={labels}
-          stepCount={stepperContent.length}
-        />
+      <View style={styles.infoContainer}>
+        <Feather name="check-circle" size={100} color="#2c3e50" />
+        <View style={{ paddingTop: 30, paddingBottom: 30 }}>
+          <Text style={styles.title}>Payment Complete</Text>
+        </View>
+
+        <Button onPress={() => navigation.navigate("HomeScreen")} variant="" title={"Next"} />
       </View>
 
-      {stepperContent[currentPosition]}
-
       <View style={styles.container}>
-        <Image source={Logo} style={{ width: 200, height: 80 }} />
+
+        <Text style={styles.balance}>KiPAY</Text>
+
         <Text style={styles.paragraph}>1. Enter amount</Text>
         <Text style={styles.paragraph}>2. Confirm Order</Text>
         <Text style={styles.paragraph}>
@@ -139,6 +102,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
+  },
+  balance: {
+    paddingTop: 10,
+    paddingBottom: 20,
+
+    fontSize: 48,
+    fontWeight: "300",
+    textAlign: "center",
+    color: "#2c3e50",
   },
   modalView: {
     margin: 0,

@@ -220,7 +220,7 @@ export default function App() {
                   name={"md-arrow-back"}
                   color={"#fff"}
                   size={30}
-                  onPress={()=>console.log(">")}
+                  onPress={''}
                 />
               ),
               headerRight: null,

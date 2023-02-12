@@ -61,6 +61,19 @@ const AddCard = ({ route, navigation }) => {
     const item = await Storage.getItem({ key: "card" });
     return item;
   };
+  const delay = (ms: any) => new Promise((res) => setTimeout(res, ms));
+
+  const getPaymentStatus = (id: any, data: any) => {
+    fetch(`https://kichain-server.onrender.com/get-payment/${id}`)
+      .then((response) => response.json())
+      .then((res) => {
+        console.log(">>", res);
+        if (res.status === "confirmed") {
+          reset();
+          navigation.navigate("PayScreen", data);
+        }
+      });
+  };
 
   const pay = async (data: any) => {
     var config = {
@@ -74,12 +87,13 @@ const AddCard = ({ route, navigation }) => {
     };
 
     axios(config)
-      .then(function (response: { data: any }) {
-        setLoading(!loading);
+      .then(async function (response: { data: any }) {
         let x = response.data;
         x.invoiceId = _id;
         console.log("PAID", x);
-        navigation.navigate("PayScreen", x);
+        // await delay(5000);
+        console.log("Waited 5s");
+        getPaymentStatus(response.data.id, x);
       })
       .catch(function (error: any) {
         alert("FAILED TO PAY");
@@ -111,7 +125,7 @@ const AddCard = ({ route, navigation }) => {
             amount: total_cost,
             currency: "USD",
           },
-          verification: 'none',
+          verification: "none",
           source: {
             id: response.data.id,
             type: "card",
@@ -134,7 +148,7 @@ const AddCard = ({ route, navigation }) => {
       })
       .catch(function (error) {
         alert("FAILED TO ADD CARD");
-        setLoading(!loading);
+        setLoading(false);
       });
   };
 
@@ -181,9 +195,9 @@ const AddCard = ({ route, navigation }) => {
       pubkey: getKey,
     };
     billingInfo.country = countryCode;
-    // billingInfo.country = "US";
-    console.log(billingInfo);
+
     secureCardData(data, billingInfo);
+    reset();
   };
 
   React.useEffect(() => {
