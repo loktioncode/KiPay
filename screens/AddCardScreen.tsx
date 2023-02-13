@@ -67,9 +67,11 @@ const AddCard = ({ route, navigation }) => {
     fetch(`https://kichain-server.onrender.com/get-payment/${id}`)
       .then((response) => response.json())
       .then((res) => {
-        console.log(">>", res);
+        console.log(">>", getCard);
+
         if (res.status === "confirmed") {
           reset();
+          setLoading(false);
           navigation.navigate("PayScreen", data);
         }
       });
@@ -90,14 +92,12 @@ const AddCard = ({ route, navigation }) => {
       .then(async function (response: { data: any }) {
         let x = response.data;
         x.invoiceId = _id;
-        console.log("PAID", x);
-        // await delay(5000);
         console.log("Waited 5s");
         getPaymentStatus(response.data.id, x);
       })
       .catch(function (error: any) {
         alert("FAILED TO PAY");
-        setLoading(!loading);
+        setLoading(false);
       });
   };
 
@@ -174,12 +174,10 @@ const AddCard = ({ route, navigation }) => {
               ipAddress: ip,
             },
           };
-          // console.log(">LOAD>", cardDataPayload);
-          setLoading(!loading);
           addCard(cardDataPayload);
         });
     } catch (error) {
-      setLoading(!loading);
+      setLoading(false);
       alert("FAILED TO PROCESS CARD INFO");
     }
   };
@@ -222,14 +220,7 @@ const AddCard = ({ route, navigation }) => {
   // if (getCard()) {
   //   return (
   //     <View style={styles.centeredView}>
-  //       <CreditCard
-  //         name=""
-  //         date=""
-  //         suffix=""
-  //         style={styles.centeredView}
-  //         textColor="white"
-  //         bgColor="#0047cc"
-  //       />
+  //       <CreditCardInput onChange={onChange} autoFocus allowScroll />
   //     </View>
   //   );
   // }

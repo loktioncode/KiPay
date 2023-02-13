@@ -43,7 +43,8 @@ export default function SnyBarCodeScanner(props: IProps) {
       const { status }: any = await BarCodeScanner.requestPermissionsAsync();
       setHasPermission(status === "granted");
     };
-
+    setScreen("scan");
+    setScanned(!scanned);
     getBarCodeScannerPermissions();
   }, []);
 
@@ -76,8 +77,11 @@ export default function SnyBarCodeScanner(props: IProps) {
     setScanned(!scanned);
     try {
       await axios.get(data).then(function (res) {
-        alert(`PAY $ ${res.data.total_cost} `);
-        navigation.navigate("AddCardScreen", res.data);
+        if (res.data.paid) {
+          alert(`INVOICE IS PAID ALREADY`);
+        } else {
+          navigation.navigate("AddCardScreen", res.data);
+        }
       });
     } catch (error) {
       alert(error);

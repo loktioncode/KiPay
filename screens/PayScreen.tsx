@@ -15,10 +15,41 @@ import StepIndicator from "react-native-step-indicator";
 
 const PayScreen = ({ route, navigation }) => {
   const { invoiceId, id, amount, status } = route.params;
+  const [loading, setLoading] = React.useState(false);
 
   let Logo = require("../assets/logozuva.png");
 
+  const updateInvoice = () => {
+    setLoading(true);
+    console.log(">INVOICE ID>", route.params);
+
+    var data = JSON.stringify({
+      paid: true,
+    });
+
+    var config = {
+      method: "put",
+      maxBodyLength: Infinity,
+      url: `http://localhost:5001/payment/63df37ad76ae0b0034b86de6/${invoiceId}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+        setLoading(false);
+      });
+  };
+
   React.useEffect(() => {
+    updateInvoice();
     console.log(">>", status);
   }, []);
 
@@ -27,14 +58,21 @@ const PayScreen = ({ route, navigation }) => {
       <View style={styles.infoContainer}>
         <Feather name="check-circle" size={100} color="#2c3e50" />
         <View style={{ paddingTop: 30, paddingBottom: 30 }}>
-          <Text style={styles.title}>Payment Complete</Text>
+          <Text style={styles.title}>USDC {amount.amount} Sent!</Text>
+        </View>
+        <View style={{ paddingTop: 1, paddingBottom: 30 }}>
+          {/* <Text style={styles.paragraph}>USDC {fees.amount} Sent!</Text> */}
         </View>
 
-        <Button onPress={() => navigation.navigate("HomeScreen")} variant="" title={"Next"} />
+        <Button
+          onPress={() => !loading && navigation.navigate("HomeScreen")}
+          variant=""
+          title={"Next"}
+          load={loading}
+        />
       </View>
 
       <View style={styles.container}>
-
         <Text style={styles.balance}>KiPAY</Text>
 
         <Text style={styles.paragraph}>1. Enter amount</Text>
