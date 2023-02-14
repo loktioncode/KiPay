@@ -38,37 +38,43 @@ type FormData = {
 
 const AddCard = ({ route, navigation }) => {
   const { total_cost, paid, _id } = route.params;
-  const [cardData, setCardData] = React.useState();
+  const [cardData, setCardData] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [countryCode, setCountryCode] = React.useState("");
   const [getKey, setPCIKey] = React.useState(null);
-
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [hide, setHide] = React.useState(false);
-  const [total, setTotal] = React.useState(0);
+  const [card, setCard] = React.useState("");
 
   const [open, setOpen] = useState(false);
   const [value, setSelectValue] = useState(null);
   const [items, setItems] = useState(countries);
 
   let uId = uuid.v4();
-  const getTotal = (qty: any, price: number) => setTotal(price * parseInt(qty));
 
   const { handleSubmit, register, setValue, errors, getValues, reset } =
     useForm<FormData>();
 
   const getCard = async () => {
     const item = await Storage.getItem({ key: "card" });
-    return item;
+    setCard(item);
   };
+
+  const removeCard = async () => {
+    await Storage.removeItem({ key: "card" });
+    setCard("");
+    // const billing = await Storage.removeItem({ key: "billing" });
+  };
+
   const delay = (ms: any) => new Promise((res) => setTimeout(res, ms));
+
+  React.useEffect(() => {
+    getCard();
+    console.log("card>>", card)
+  }, []);
 
   const getPaymentStatus = (id: any, data: any) => {
     fetch(`https://kichain-server.onrender.com/get-payment/${id}`)
       .then((response) => response.json())
       .then((res) => {
-        console.log(">>", getCard);
-
         if (res.status === "confirmed") {
           reset();
           setLoading(false);
@@ -93,12 +99,40 @@ const AddCard = ({ route, navigation }) => {
         let x = response.data;
         x.invoiceId = _id;
         console.log("Waited 5s");
+        delay(5000);
         getPaymentStatus(response.data.id, x);
       })
       .catch(function (error: any) {
         alert("FAILED TO PAY");
         setLoading(false);
       });
+  };
+
+  const existingCardPay = async (cardId: string) => {
+    let ip = await Network.getIpAddressAsync();
+
+    let paymentData = JSON.stringify({
+      idempotencyKey: uId,
+      amount: {
+        amount: total_cost,
+        currency: "USD",
+      },
+      verification: "none",
+      source: {
+        id: card,
+        type: "card",
+      },
+      description: "",
+      channel: "",
+      metadata: {
+        email: "satoshi@circle.com",
+        phoneNumber: "+14155555555",
+        sessionId: uId,
+        ipAddress: ip,
+      },
+    });
+
+    console.log(">>>exist pay", paymentData);
   };
 
   const addCard = async (payload: any) => {
@@ -117,8 +151,9 @@ const AddCard = ({ route, navigation }) => {
       .then(function (response) {
         Storage.setItem({
           key: "card",
-          value: response.data.id,
+          value: JSON.stringify(response.data.id),
         });
+
         let data = JSON.stringify({
           idempotencyKey: uId,
           amount: {
@@ -193,7 +228,10 @@ const AddCard = ({ route, navigation }) => {
       pubkey: getKey,
     };
     billingInfo.country = countryCode;
-
+    Storage.setItem({
+      key: "billing",
+      value: billingInfo,
+    });
     secureCardData(data, billingInfo);
     reset();
   };
@@ -217,10 +255,24 @@ const AddCard = ({ route, navigation }) => {
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
 
-  // if (getCard()) {
+  // if (card !== "") {
   //   return (
   //     <View style={styles.centeredView}>
-  //       <CreditCardInput onChange={onChange} autoFocus allowScroll />
+  //       <View style={{ marginBottom: 25 }}>
+  //         <CreditCard name="Elisha Bere" suffix={"XXXX"} date="****" />
+  //       </View>
+  //       <Button
+  //         onPress={existingCardPay}
+  //         variant="outlined"
+  //         title="Next"
+  //         load={loading}
+  //       />
+  //       <Button
+  //         onPress={removeCard}
+  //         variant="text"
+  //         title="click to add new card?"
+  //         load={loading}
+  //       />
   //     </View>
   //   );
   // }
@@ -230,40 +282,6 @@ const AddCard = ({ route, navigation }) => {
       behavior="position"
       keyboardVerticalOffset={keyboardVerticalOffset}
     >
-      {/* <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View>
-              <Text style={styles.modalText}>Confirm</Text>
-            </View>
-
-            <View>
-              {route?.params?.action === "send" ? (
-                <Text style={styles.paragraph}>Amount to be Sent!</Text>
-              ) : (
-                <Text style={styles.paragraph}>
-                  {getValues("quantity") + " " + route.params.metric}
-                </Text>
-              )}
-
-              <Text style={styles.total}>TOTAL: $ {total}</Text>
-            </View>
-            <Pressable
-              style={[styles.button, styles.buttonClose]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text style={styles.textStyle}>Hide Modal</Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal> */}
       <ScrollView style={styles.main}>
         <CreditCardInput onChange={onChange} autoFocus allowScroll />
 
@@ -350,10 +368,11 @@ const styles = StyleSheet.create({
     padding: 15,
   },
   centeredView: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginBottom: 20,
+    backgroundColor: "#FFFF",
+    height: "100%",
   },
   modalView: {
     margin: 0,

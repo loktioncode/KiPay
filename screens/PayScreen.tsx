@@ -3,15 +3,12 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
   ScrollView,
   ActivityIndicator,
 } from "react-native";
 import axios from "axios";
 import { Feather } from "@expo/vector-icons";
 import Button from "../components/Button";
-import { customStyles } from "../config/stepperStyles";
-import StepIndicator from "react-native-step-indicator";
 
 const PayScreen = ({ route, navigation }) => {
   const { invoiceId, id, amount, status } = route.params;
@@ -30,7 +27,7 @@ const PayScreen = ({ route, navigation }) => {
     var config = {
       method: "put",
       maxBodyLength: Infinity,
-      url: `http://localhost:5001/payment/63df37ad76ae0b0034b86de6/${invoiceId}`,
+      url: `https://kichain-server.onrender.com/payment/${invoiceId}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -50,7 +47,7 @@ const PayScreen = ({ route, navigation }) => {
 
   React.useEffect(() => {
     updateInvoice();
-    console.log(">>", status);
+    console.log(">>", invoiceId);
   }, []);
 
   return (

@@ -7,6 +7,7 @@ import {
   StatusBar,
   TouchableOpacity,
   Animated,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { BarCodeScanner } from "expo-barcode-scanner";
@@ -14,6 +15,7 @@ import Constants from "expo-constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { Storage } from "expo-storage";
+import { delay } from "react-native-reanimated/lib/types/lib/reanimated2/animation/delay";
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -30,8 +32,11 @@ export default function SnyBarCodeScanner(props: IProps) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [screen, setScreen] = useState<string>("scan");
   const [scanned, setScanned] = useState<boolean>(false);
+  const [loading, setloading] = useState<boolean>(true);
+
   const [sizeQrCode, setSizeQrCode] = useState<any>({ width: 0, height: 0 });
   const lineAnim = useRef(new Animated.Value(0)).current;
+  const delay = (ms: any) => new Promise((res) => setTimeout(res, ms));
 
   const onLineLayout = (event: any) => {
     const { x, y, height, width } = event.nativeEvent.layout;
@@ -76,14 +81,20 @@ export default function SnyBarCodeScanner(props: IProps) {
     onScan && onScan(data);
     setScanned(!scanned);
     try {
+      setloading(true);
       await axios.get(data).then(function (res) {
         if (res.data.paid) {
+          setloading(false);
           alert(`INVOICE IS PAID ALREADY`);
         } else {
+          setloading(false);
+          alert(`PAY $ ${res.data.total_cost} `);
+          delay(5000);
           navigation.navigate("AddCardScreen", res.data);
         }
       });
     } catch (error) {
+      setloading(false);
       alert(error);
     }
   };
@@ -93,6 +104,23 @@ export default function SnyBarCodeScanner(props: IProps) {
   }
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
+  }
+
+  if (loading === true) {
+    return (
+      <View style={styles.centeredView}>
+        <View style={{ marginBottom: 25, marginTop: '20%' }}>
+          <ActivityIndicator size="large" color="#000" />
+        </View>
+
+        <View style={styles.container}>
+          <Text style={styles.balance}>Loading...</Text>
+        </View>
+        <View style={{ paddingTop: 30, paddingBottom: 30 }}>
+          <Text style={styles.title}>Pay Sent!</Text>
+        </View>
+      </View>
+    );
   }
 
   return (
@@ -111,6 +139,7 @@ export default function SnyBarCodeScanner(props: IProps) {
           <View style={styles.layerTop}></View>
           <View style={styles.layerCenter}>
             <View style={styles.layerLeft} />
+
             <View style={styles.focused} onLayout={onLineLayout}>
               <EdgeQRCode position="topRight" />
               <EdgeQRCode position="topLeft" />
@@ -150,6 +179,7 @@ export default function SnyBarCodeScanner(props: IProps) {
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
+
       <View style={styles.bottomAction}>
         <TouchableOpacity
           onPress={() => {
@@ -254,7 +284,21 @@ const styles: any = StyleSheet.create({
     // fontFamily: "Roboto_500Medium",
     marginTop: 4,
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  balance: {
+    paddingTop: 10,
+    paddingBottom: 20,
 
+    fontSize: 48,
+    fontWeight: "300",
+    textAlign: "center",
+    color: "#2c3e50",
+  },
   // layout
   main: {
     flex: 1,

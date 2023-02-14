@@ -62,7 +62,7 @@ const s = StyleSheet.create({
     borderRadius: 12,
     width: 290,
     position: "relative",
-    height:300
+    height:200
   },
   logoContainer: { position: "relative", marginBottom: 24 },
   circle: { width: 34, height: 34, borderRadius: 17 },
