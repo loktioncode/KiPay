@@ -32,7 +32,7 @@ export default function SnyBarCodeScanner(props: IProps) {
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [screen, setScreen] = useState<string>("scan");
   const [scanned, setScanned] = useState<boolean>(false);
-  const [loading, setloading] = useState<boolean>(true);
+  const [loading, setloading] = useState<boolean>(false);
 
   const [sizeQrCode, setSizeQrCode] = useState<any>({ width: 0, height: 0 });
   const lineAnim = useRef(new Animated.Value(0)).current;
