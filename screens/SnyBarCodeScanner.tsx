@@ -100,24 +100,29 @@ export default function SnyBarCodeScanner(props: IProps) {
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return (
+      <View style={styles.centeredView}>
+        <Text style={styles.title}>Requesting for camera permission</Text>
+      </View>
+    );
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <View style={styles.centeredView}>
+        <Text style={styles.title}>No access to camera</Text>
+      </View>
+    );
   }
 
   if (loading === true) {
     return (
       <View style={styles.centeredView}>
-        <View style={{ marginBottom: 25, marginTop: '20%' }}>
+        <View style={{ marginBottom: 25, marginTop: "20%" }}>
           <ActivityIndicator size="large" color="#000" />
         </View>
 
         <View style={styles.container}>
           <Text style={styles.balance}>Loading...</Text>
-        </View>
-        <View style={{ paddingTop: 30, paddingBottom: 30 }}>
-          <Text style={styles.title}>Pay Sent!</Text>
         </View>
       </View>
     );
