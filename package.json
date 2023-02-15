@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@expo/webpack-config": "^0.17.2",
+    "@react-native-async-storage/async-storage": "~1.17.3",
     "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-community/netinfo": "8.2.0",
     "@react-navigation/drawer": "^6.5.0",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
@@ -28,7 +30,7 @@
     "firebase": "^9.9.0",
     "iso-3166-1-alpha-2": "^1.0.1",
     "link": "^1.5.1",
-    "lottie-react-native": "^5.1.5",
+    "lottie-react-native": "5.0.1",
     "openpgp": "^5.5.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",

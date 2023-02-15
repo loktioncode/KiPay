@@ -51,7 +51,6 @@ const AddCard = ({ route, navigation }) => {
   const removeCard = () => {
     AsyncStorage.removeItem("card")
       .then((value) => {
-        console.log(`Retrieved string: ${value}`);
         setCard("");
       })
       .catch((error) => {
@@ -59,10 +58,20 @@ const AddCard = ({ route, navigation }) => {
       });
   };
 
+  const storeCard = (cardId: string) => {
+    AsyncStorage.setItem("card", cardId)
+      .then(() => {
+        setCard(cardId);
+        console.log("Card saved successfully!");
+      })
+      .catch((error) => {
+        console.log(`Error saving string: ${error}`);
+      });
+  };
+
   const getCard = async () => {
     AsyncStorage.getItem("card").then((item) => {
-      console.log("String pulled successfully!");
-      console.log("card>>", card);
+      console.log("saved card>>", card);
     });
   };
 
@@ -70,13 +79,12 @@ const AddCard = ({ route, navigation }) => {
     getCard();
   }, [card]);
 
-  const getPaymentStatus = (id: any, data: any) => {
+  const updateInvoiceStatus = (id: any, data: any) => {
     fetch(`https://kichain-server.onrender.com/get-payment/${id}`)
       .then((response) => response.json())
       .then((res) => {
         if (res.status === "confirmed") {
-          reset();
-          setLoading(false);
+          console.log(">>>exist paid");
           navigation.navigate("PayScreen", data);
         }
       });
@@ -97,7 +105,7 @@ const AddCard = ({ route, navigation }) => {
       .then(async function (response: { data: any }) {
         let x = response.data;
         x.invoiceId = _id;
-        getPaymentStatus(response.data.id, x);
+        updateInvoiceStatus(response.data.id, x);
       })
       .catch(function (error: any) {
         alert("FAILED TO PAY");
@@ -107,6 +115,7 @@ const AddCard = ({ route, navigation }) => {
 
   const existingCardPay = async (cardId: string) => {
     let ip = await Network.getIpAddressAsync();
+    setLoading(true);
 
     let paymentData = JSON.stringify({
       idempotencyKey: uId,
@@ -129,7 +138,12 @@ const AddCard = ({ route, navigation }) => {
       },
     });
 
-    console.log(">>>exist pay", paymentData);
+    if (paid) {
+      alert("INVOICE PAID");
+      setLoading(false);
+    } else {
+      pay(paymentData);
+    }
   };
 
   const addCard = async (payload: any) => {
@@ -170,16 +184,11 @@ const AddCard = ({ route, navigation }) => {
         reset();
         if (paid) {
           alert("INVOICE PAID");
+        } else if (route.params !== null) {
+          storeCard(response.data.id);
         } else {
           pay(data);
-          AsyncStorage.setItem("card", response.data.id)
-            .then(() => {
-              setCard(response.data.id);
-              console.log("Card saved successfully!");
-            })
-            .catch((error) => {
-              console.log(`Error saving string: ${error}`);
-            });
+          storeCard(response.data.id);
         }
       })
       .catch(function (error) {
@@ -252,17 +261,23 @@ const AddCard = ({ route, navigation }) => {
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
 
-  if (card !== "" && card !== null) {
+  if (card !== "" && card !== null && route.params !== null) {
     return (
       <View style={styles.centeredView}>
         <View style={{ marginBottom: 25 }}>
           <CreditCard name="**** ****" suffix={"XXX"} date="****" />
         </View>
-        <Button onPress={existingCardPay} variant="outlined" title="Next" />
+        <Button
+          onPress={existingCardPay}
+          variant="outlined"
+          title="PAY"
+          load={loading}
+        />
         <Button
           onPress={removeCard}
           variant="text"
           title="click to add new card?"
+          load={loading}
         />
       </View>
     );
