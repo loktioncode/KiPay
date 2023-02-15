@@ -71,9 +71,14 @@ const AddCard = ({ route, navigation }) => {
 
   const getCard = async () => {
     AsyncStorage.getItem("card").then((item) => {
+      reset();
       console.log("saved card>>", card);
     });
   };
+
+  React.useEffect(() => {
+    setLoading(false);
+  });
 
   React.useEffect(() => {
     getCard();
@@ -115,7 +120,6 @@ const AddCard = ({ route, navigation }) => {
 
   const existingCardPay = async (cardId: string) => {
     let ip = await Network.getIpAddressAsync();
-    setLoading(true);
 
     let paymentData = JSON.stringify({
       idempotencyKey: uId,
@@ -180,11 +184,9 @@ const AddCard = ({ route, navigation }) => {
             ipAddress: ip,
           },
         });
-
-        reset();
         if (paid) {
           alert("INVOICE PAID");
-        } else if (route.params !== null) {
+        } else if (route.params === null) {
           storeCard(response.data.id);
         } else {
           pay(data);
@@ -239,7 +241,6 @@ const AddCard = ({ route, navigation }) => {
     };
     billingInfo.country = countryCode;
     secureCardData(data, billingInfo);
-    reset();
   };
 
   React.useEffect(() => {
@@ -261,7 +262,7 @@ const AddCard = ({ route, navigation }) => {
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
 
-  if (card !== "" && card !== null && route.params !== null) {
+  if (card !== "" && card !== null && route.params === null) {
     return (
       <View style={styles.centeredView}>
         <View style={{ marginBottom: 25 }}>
@@ -269,15 +270,14 @@ const AddCard = ({ route, navigation }) => {
         </View>
         <Button
           onPress={existingCardPay}
-          variant="outlined"
+          variant=""
           title="PAY"
-          load={loading}
+          // load={loading}
         />
         <Button
           onPress={removeCard}
           variant="text"
           title="click to add new card?"
-          load={loading}
         />
       </View>
     );

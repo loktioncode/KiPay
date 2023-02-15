@@ -55,7 +55,7 @@ const PayScreen = ({ route, navigation }) => {
       <View style={styles.infoContainer}>
         <Feather name="check-circle" size={100} color="#2c3e50" />
         <View style={{ paddingTop: 30, paddingBottom: 30 }}>
-          <Text style={styles.title}>USDC {amount.amount} Paid ! </Text>
+          <Text style={styles.title}>USDC {amount.amount} PAID ! </Text>
         </View>
         <View style={{ paddingTop: 1, paddingBottom: 30 }}>
           {/* <Text style={styles.paragraph}>USDC {fees.amount} Sent!</Text> */}
