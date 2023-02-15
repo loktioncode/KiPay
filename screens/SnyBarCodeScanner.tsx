@@ -15,7 +15,8 @@ import Constants from "expo-constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { Storage } from "expo-storage";
-import { delay } from "react-native-reanimated/lib/types/lib/reanimated2/animation/delay";
+import NetInfo from "@react-native-community/netinfo";
+import Toast from "react-native-root-toast";
 
 const deviceHeight = Dimensions.get("window").height;
 const deviceWidth = Dimensions.get("window").width;
@@ -55,6 +56,18 @@ export default function SnyBarCodeScanner(props: IProps) {
 
   useEffect(() => {
     handleAnimationLine();
+    NetInfo.fetch().then((state) => {
+      let toast = Toast.show(`${state.type} connected!`, {
+        duration: Toast.durations.LONG,
+        backgroundColor: "#FFF",
+        textColor: "#000",
+      });
+      setTimeout(function hideToast() {
+        Toast.hide(toast);
+      }, 500);
+      console.log("Connection type", state.type);
+      console.log("Is connected?", state.isInternetReachable);
+    });
   }, []);
 
   const handleAnimationLine = () => {

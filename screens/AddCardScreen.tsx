@@ -5,20 +5,15 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Text,
-  Modal,
-  Pressable,
 } from "react-native";
-import {
-  CreditCardInput,
-  LiteCreditCardInput,
-} from "react-native-credit-card-input";
+
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { CreditCardInput } from "react-native-credit-card-input";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import Form from "../components/Form";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { Storage } from "expo-storage";
 import validation from "../config/validations";
 import uuid from "react-native-uuid";
 import * as Network from "expo-network";
@@ -53,23 +48,27 @@ const AddCard = ({ route, navigation }) => {
   const { handleSubmit, register, setValue, errors, getValues, reset } =
     useForm<FormData>();
 
+  const removeCard = () => {
+    AsyncStorage.removeItem("card")
+      .then((value) => {
+        console.log(`Retrieved string: ${value}`);
+        setCard("");
+      })
+      .catch((error) => {
+        console.log(`Error retrieving string: ${error}`);
+      });
+  };
+
   const getCard = async () => {
-    const item = await Storage.getItem({ key: "card" });
-    setCard(item);
+    AsyncStorage.getItem("card").then((item) => {
+      console.log("String pulled successfully!");
+      console.log("card>>", card);
+    });
   };
-
-  const removeCard = async () => {
-    await Storage.removeItem({ key: "card" });
-    setCard("");
-    // const billing = await Storage.removeItem({ key: "billing" });
-  };
-
-  const delay = (ms: any) => new Promise((res) => setTimeout(res, ms));
 
   React.useEffect(() => {
     getCard();
-    console.log("card>>", card)
-  }, []);
+  }, [card]);
 
   const getPaymentStatus = (id: any, data: any) => {
     fetch(`https://kichain-server.onrender.com/get-payment/${id}`)
@@ -98,8 +97,6 @@ const AddCard = ({ route, navigation }) => {
       .then(async function (response: { data: any }) {
         let x = response.data;
         x.invoiceId = _id;
-        console.log("Waited 5s");
-        delay(5000);
         getPaymentStatus(response.data.id, x);
       })
       .catch(function (error: any) {
@@ -149,11 +146,6 @@ const AddCard = ({ route, navigation }) => {
 
     axios(config)
       .then(function (response) {
-        Storage.setItem({
-          key: "card",
-          value: JSON.stringify(response.data.id),
-        });
-
         let data = JSON.stringify({
           idempotencyKey: uId,
           amount: {
@@ -174,11 +166,20 @@ const AddCard = ({ route, navigation }) => {
             ipAddress: ip,
           },
         });
+
         reset();
         if (paid) {
           alert("INVOICE PAID");
         } else {
           pay(data);
+          AsyncStorage.setItem("card", response.data.id)
+            .then(() => {
+              setCard(response.data.id);
+              console.log("Card saved successfully!");
+            })
+            .catch((error) => {
+              console.log(`Error saving string: ${error}`);
+            });
         }
       })
       .catch(function (error) {
@@ -228,10 +229,6 @@ const AddCard = ({ route, navigation }) => {
       pubkey: getKey,
     };
     billingInfo.country = countryCode;
-    Storage.setItem({
-      key: "billing",
-      value: billingInfo,
-    });
     secureCardData(data, billingInfo);
     reset();
   };
@@ -255,27 +252,21 @@ const AddCard = ({ route, navigation }) => {
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
 
-  // if (card !== "") {
-  //   return (
-  //     <View style={styles.centeredView}>
-  //       <View style={{ marginBottom: 25 }}>
-  //         <CreditCard name="Elisha Bere" suffix={"XXXX"} date="****" />
-  //       </View>
-  //       <Button
-  //         onPress={existingCardPay}
-  //         variant="outlined"
-  //         title="Next"
-  //         load={loading}
-  //       />
-  //       <Button
-  //         onPress={removeCard}
-  //         variant="text"
-  //         title="click to add new card?"
-  //         load={loading}
-  //       />
-  //     </View>
-  //   );
-  // }
+  if (card !== "" && card !== null) {
+    return (
+      <View style={styles.centeredView}>
+        <View style={{ marginBottom: 25 }}>
+          <CreditCard name="**** ****" suffix={"XXX"} date="****" />
+        </View>
+        <Button onPress={existingCardPay} variant="outlined" title="Next" />
+        <Button
+          onPress={removeCard}
+          variant="text"
+          title="click to add new card?"
+        />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -283,7 +274,7 @@ const AddCard = ({ route, navigation }) => {
       keyboardVerticalOffset={keyboardVerticalOffset}
     >
       <ScrollView style={styles.main}>
-        <CreditCardInput onChange={onChange} autoFocus allowScroll />
+        <CreditCardInput onChange={onChange} allowScroll />
 
         <View style={styles.container}>
           <Form {...{ register, setValue, validation, errors }}>

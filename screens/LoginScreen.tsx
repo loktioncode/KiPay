@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 // import piggyLogo from "../assets/piggy.svg";
 import { useForm, Controller } from "react-hook-form";
-import Toast from "react-native-root-toast";
 // You can import from local files
 import Input from "../components/Input";
 import Form from "../components/Form";
@@ -69,16 +68,12 @@ const LoginScreen = ({ navigation }) => {
   const { handleSubmit, register, setValue, errors, getValues } =
     useForm<FormData>();
 
-  let toast = Toast.show("Request sent!", {
-    duration: Toast.durations.LONG,
-  });
+
 
   const onSubmit = (data: FormData) => {
     // Alert.alert("data", JSON.stringify(data));
     // <Toast visible={this.state.visible}>Thanks for subscribing!</Toast>
-    setTimeout(function hideToast() {
-      Toast.hide(toast);
-    }, 500);
+  
     navigation.navigate("HomeScreen");
   };
 
