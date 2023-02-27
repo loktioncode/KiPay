@@ -30,7 +30,7 @@ export default function App() {
     <NavigationContainer>
       <UserProvider>
         <Drawer.Navigator
-          initialRouteName="Login"
+          initialRouteName="Home"
           screenOptions={{
             headerShown: true,
             drawerType: isLargeScreen ? "permanent" : "back",
@@ -143,7 +143,7 @@ export default function App() {
                   name={"md-arrow-back"}
                   color={"#2c3e50"}
                   size={35}
-                  onPress={() => navigation.navigate("HomeScreen")}
+                  onPress={() => navigation.navigate("LoginScreen")}
                 />
               ),
             })}

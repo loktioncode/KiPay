@@ -95,6 +95,7 @@ export default function SnyBarCodeScanner(props: IProps) {
     setScanned(!scanned);
     try {
       setloading(true);
+      console.log("data", data);
       await axios.get(data).then(function (res) {
         if (res.data.paid) {
           setloading(false);

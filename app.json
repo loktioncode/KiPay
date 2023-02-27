@@ -18,7 +18,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.loktioncode.reactmobile"
     },
     "android": {
       "adaptiveIcon": {
@@ -32,8 +33,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "29843aa9-44ce-4cf9-b2b4-5c070a69257b"
+        "projectId": "03308143-6e8b-4111-b07b-81771514622f"
       }
-    }
+    },
+    "owner": "loktioncode"
   }
 }

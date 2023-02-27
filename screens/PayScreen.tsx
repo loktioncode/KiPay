@@ -1,25 +1,81 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import axios from "axios";
 import { Feather } from "@expo/vector-icons";
 import Button from "../components/Button";
+import uuid from "react-native-uuid";
 
 const PayScreen = ({ route, navigation }) => {
-  const { invoiceId, id, amount, status } = route.params;
+  const { invoiceId, id, amount, shop_owner, fees } = route.params;
   const [loading, setLoading] = React.useState(false);
+  const [shop_eth_wallet, setEthWallet] = React.useState("");
+  let uId = uuid.v4();
 
   let Logo = require("../assets/logozuva.png");
 
+  const payShop = (wallet: string) => {
+    let payload = JSON.stringify({
+      source: {
+        type: "wallet",
+        id: "1001044978",
+      },
+      destination: {
+        type: "blockchain",
+        address: wallet,
+        chain: "ETH",
+      },
+      amount: {
+        amount: amount.amount,
+        currency: "USD",
+      },
+      idempotencyKey: uId,
+    });
+
+    var config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://kichain-server.onrender.com/eth-txn",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: payload,
+    };
+
+    console.log(">>",payload);
+
+    axios(config)
+      .then(function (response: { data: any }) {
+        console.log(JSON.stringify(response.data));
+        setLoading(false);
+      })
+      .catch(function (error: any) {
+        setLoading(false);
+      });
+  };
+
+  const getShopWallet = (email: string) => {
+    var config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `https://kichain-server.onrender.com/get-wallet?email=${email}`,
+      headers: {},
+    };
+
+    axios(config)
+      .then(function (response) {
+        let wallet = response.data.walletAddress;
+        if (wallet !== null) {
+          console.log(wallet);
+          payShop(wallet);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const updateInvoice = () => {
     setLoading(true);
-    console.log(">INVOICE ID>", route.params);
-
     var data = JSON.stringify({
       paid: true,
     });
@@ -37,7 +93,7 @@ const PayScreen = ({ route, navigation }) => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
-        setLoading(false);
+        getShopWallet(shop_owner);
       })
       .catch(function (error) {
         console.log(error);
@@ -47,7 +103,6 @@ const PayScreen = ({ route, navigation }) => {
 
   React.useEffect(() => {
     updateInvoice();
-    console.log(">>", invoiceId);
   }, []);
 
   return (
@@ -72,10 +127,8 @@ const PayScreen = ({ route, navigation }) => {
       <View style={styles.container}>
         <Text style={styles.balance}>KiPAY</Text>
 
-        <Text style={styles.paragraph}>1. Enter amount</Text>
-        <Text style={styles.paragraph}>2. Confirm Order</Text>
-        <Text style={styles.paragraph}>
-          3. Use order number at TillPoint to deposit
+        <Text style={styles.title}>
+          FEE CHARGED{parseInt(amount.amount) * 0.03}{" "}
         </Text>
       </View>
     </ScrollView>

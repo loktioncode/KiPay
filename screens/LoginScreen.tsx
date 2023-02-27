@@ -68,22 +68,20 @@ const LoginScreen = ({ navigation }) => {
   const { handleSubmit, register, setValue, errors, getValues } =
     useForm<FormData>();
 
-
-
   const onSubmit = (data: FormData) => {
     // Alert.alert("data", JSON.stringify(data));
     // <Toast visible={this.state.visible}>Thanks for subscribing!</Toast>
-  
-    navigation.navigate("HomeScreen");
+
+    navigation.navigate("SnyBarCodeScanner");
   };
 
   let Logo = require("../assets/logo.png");
 
   return (
     <ScrollView style={styles.main}>
-      <View style={styles.logo}>
+      {/* <View style={styles.logo}>
         <Image source={Logo} style={{ width: 100, height: 100 }} />
-      </View>
+      </View> */}
       <View style={styles.container}>
         <Form {...{ register, setValue, validation, errors }}>
           <Input name="phone" label="Phone Number" keyboardType={"numeric"} />

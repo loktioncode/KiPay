@@ -1,6 +1,6 @@
 export default {
   name: {
-    required: { value: true, message: "Name is required" },
+    required: { value: true, message: "Name Surname is required" },
     // pattern: {
     //   value: /^\w{2,}$/,
     //   message: "Must contain name and surname",

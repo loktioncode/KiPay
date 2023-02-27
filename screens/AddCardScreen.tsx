@@ -32,12 +32,13 @@ type FormData = {
 };
 
 const AddCard = ({ route, navigation }) => {
-  const { total_cost, paid, _id } = route.params;
+  const { total_cost, paid, _id, shop_owner } = route.params;
   const [cardData, setCardData] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [countryCode, setCountryCode] = React.useState("");
   const [getKey, setPCIKey] = React.useState(null);
-  const [card, setCard] = React.useState("");
+  const [card, setCard] = React.useState(null);
+  const [eth_wallet, setEthWallet] = React.useState("");
 
   const [open, setOpen] = useState(false);
   const [value, setSelectValue] = useState(null);
@@ -51,7 +52,7 @@ const AddCard = ({ route, navigation }) => {
   const removeCard = () => {
     AsyncStorage.removeItem("card")
       .then((value) => {
-        setCard("");
+        setCard(null);
       })
       .catch((error) => {
         console.log(`Error retrieving string: ${error}`);
@@ -77,10 +78,6 @@ const AddCard = ({ route, navigation }) => {
   };
 
   React.useEffect(() => {
-    setLoading(false);
-  });
-
-  React.useEffect(() => {
     getCard();
   }, [card]);
 
@@ -89,7 +86,7 @@ const AddCard = ({ route, navigation }) => {
       .then((response) => response.json())
       .then((res) => {
         if (res.status === "confirmed") {
-          console.log(">>>exist paid");
+          setLoading(false);
           navigation.navigate("PayScreen", data);
         }
       });
@@ -110,6 +107,7 @@ const AddCard = ({ route, navigation }) => {
       .then(async function (response: { data: any }) {
         let x = response.data;
         x.invoiceId = _id;
+        x.shop_owner = shop_owner;
         updateInvoiceStatus(response.data.id, x);
       })
       .catch(function (error: any) {
@@ -118,9 +116,10 @@ const AddCard = ({ route, navigation }) => {
       });
   };
 
-  const existingCardPay = async (cardId: string) => {
+  const existingCardPay = async () => {
+    console.log(">>>>>");
     let ip = await Network.getIpAddressAsync();
-
+    // setLoading(!loading);
     let paymentData = JSON.stringify({
       idempotencyKey: uId,
       amount: {
@@ -145,7 +144,7 @@ const AddCard = ({ route, navigation }) => {
     if (paid) {
       alert("INVOICE PAID");
       setLoading(false);
-    } else {
+    } else if (card !== null) {
       pay(paymentData);
     }
   };
@@ -164,6 +163,9 @@ const AddCard = ({ route, navigation }) => {
 
     axios(config)
       .then(function (response) {
+        if (card === null) {
+          storeCard(response.data.id);
+        }
         let data = JSON.stringify({
           idempotencyKey: uId,
           amount: {
@@ -172,7 +174,7 @@ const AddCard = ({ route, navigation }) => {
           },
           verification: "none",
           source: {
-            id: response.data.id,
+            id: card ?? response.data.id,
             type: "card",
           },
           description: "",
@@ -188,9 +190,8 @@ const AddCard = ({ route, navigation }) => {
           alert("INVOICE PAID");
         } else if (route.params === null) {
           storeCard(response.data.id);
-        } else {
+        } else if (card === null) {
           pay(data);
-          storeCard(response.data.id);
         }
       })
       .catch(function (error) {
@@ -201,9 +202,7 @@ const AddCard = ({ route, navigation }) => {
 
   const secureCardData = async (data: any, billingInfo: FormData) => {
     let ip = await Network.getIpAddressAsync();
-
     try {
-      setLoading(!loading);
       await axios
         .post("https://kichain-server.onrender.com/card-secure", data)
         .then(function (res) {
@@ -234,6 +233,7 @@ const AddCard = ({ route, navigation }) => {
   };
 
   const saveCardInfo = (cardData: any, billingInfo: FormData) => {
+    setLoading(true);
     const data = {
       number: cardData?.values?.number.split(" ").join(""),
       cvv: cardData?.values?.cvc,
@@ -262,18 +262,19 @@ const AddCard = ({ route, navigation }) => {
 
   const keyboardVerticalOffset = Platform.OS === "ios" ? 0 : 0;
 
-  if (card !== "" && card !== null && route.params === null) {
+  if (card !== null && loading !== true) {
     return (
       <View style={styles.centeredView}>
         <View style={{ marginBottom: 25 }}>
           <CreditCard name="**** ****" suffix={"XXX"} date="****" />
         </View>
         <Button
-          onPress={existingCardPay}
+          onPress={() => existingCardPay()}
           variant=""
           title="PAY"
-          // load={loading}
+          load={loading}
         />
+
         <Button
           onPress={removeCard}
           variant="text"

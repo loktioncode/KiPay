@@ -41,27 +41,27 @@ export const menuItems = [
     ),
     type: "add",
   },
-  {
-    name: "DEPOSIT",
-    code: "#3498db",
-    icon: (
-      <AntDesign name="download" size={40} color="white" style={styles.icon} />
-    ),
-    type: "deposit",
-  },
-  {
-    name: "WITHDRAW",
-    code: "#9b59b6",
-    icon: (
-      <Ionicons
-        name="cash-outline"
-        size={40}
-        color="white"
-        style={styles.icon}
-      />
-    ),
-    type: "withdraw",
-  },
+  // {
+  //   name: "DEPOSIT",
+  //   code: "#3498db",
+  //   icon: (
+  //     <AntDesign name="download" size={40} color="white" style={styles.icon} />
+  //   ),
+  //   type: "deposit",
+  // },
+  // {
+  //   name: "WITHDRAW",
+  //   code: "#9b59b6",
+  //   icon: (
+  //     <Ionicons
+  //       name="cash-outline"
+  //       size={40}
+  //       color="white"
+  //       style={styles.icon}
+  //     />
+  //   ),
+  //   type: "withdraw",
+  // },
 ];
 
 export const goodsGridItems = [
